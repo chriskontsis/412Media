@@ -1,5 +1,5 @@
 # CSE412
 
-~ Alejandro Briones
-~ Chris Kontsis 
-~ Will Hanson
+# Alejandro Briones
+# Chris Kontsis 
+# Will Hanson
