@@ -1,5 +1,5 @@
 import React from "react";
-import "./rightBar.sass";
+import "./rightBar.scss";
 
 const RightBar = () => {
   return <div className="rightBar">RightBar</div>;
