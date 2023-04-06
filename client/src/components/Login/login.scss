@@ -8,8 +8,9 @@ justify-content: center;
         width: 50%;
         display: flex;
         background-color: white;
-        border-radius:10px;
+        border-radius:15px;
         min-height: 600px;
+        overflow: hidden;
         .left{
             flex:1;
             background: linear-gradient(#42275a,#734b6d );
@@ -22,7 +23,6 @@ justify-content: center;
             h1{
                 font-size: 50px;
             }
-            p{}
             span{
                 font-size: 14px;
             }
@@ -40,8 +40,11 @@ justify-content: center;
             display: flex;
             flex-direction: column;
             gap: 50px;
+            justify-content: center;
             form{
                 gap: 30px;
+                display: flex;
+                flex-direction: column;
                 input{
                     border: none;
                     border-bottom: 1px solid lightgrey;
@@ -52,6 +55,9 @@ justify-content: center;
                     padding: 10px;
                     border: none;
                     background-color:#42275a;
+                    color: white;
+                    font-weight: bold;
+                    cursor: pointer;
                 }
             }
         }
