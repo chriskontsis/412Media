@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Home from "./pages/Home/Home";
@@ -13,9 +13,10 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
+import { AuthContext } from "./context/authContext";
 
 function App() {
-  const currentUser = true;
+  const { currentUser } = useContext(AuthContext);
 
   const Layout = () => {
     return (
