@@ -49,6 +49,25 @@ app.post("/register", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    try {
+      const result = await pool.query(
+        'SELECT * FROM users WHERE username = $1 AND pwd = $2',
+        [username, password]
+      );
+      if (result.rowCount === 1) {
+        res.json({ success: true });
+      } else {
+        res.json({ success: false });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false });
+    }
+  });
+
+
 app.listen(3005, () => {
   console.log("server is up and listening on port 3005");
 });
