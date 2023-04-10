@@ -19,7 +19,7 @@ const Register = () => {
     e.preventDefault();
     try {
       // Send form data to the server
-      await axios.post("/register", formData);
+      await axios.post("http://localhost:3005/register", formData);
 
       // Show success message
       alert("Registration successful");
