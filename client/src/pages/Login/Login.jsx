@@ -27,7 +27,7 @@ const Login = () => {
       if (response.data.success) {
         setMessage('Login successful');
         login();
-        navigate('/home');
+        navigate('/');
       } else {
         setMessage('Invalid username or password');
       }
