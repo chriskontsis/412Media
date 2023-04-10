@@ -3,37 +3,26 @@ import React, { useContext, useState } from "react";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
-import axios from "axios";
-
-
-
-
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [inputs, setInputs] = useState({
+    username: "",
+    password: "",
+  });
 
+  const [err, setErr] = useState(null);
   const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const { login } = useContext(AuthContext);
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3005/login", {
-        username,
-        password,
-      });
-      if (response.data.success) {
-        setMessage('Login successful');
-        login();
-        navigate('/');
-      } else {
-        setMessage('Invalid username or password');
-      }
-    } catch (error) {
-      console.error(error);
-      setMessage('An error occurred');
+      await login(inputs);
+      navigate("/");
+    } catch (err) {
+      setErr(err.response.data);
     }
   };
 
@@ -50,22 +39,22 @@ const Login = () => {
         </div>
         <div className="right">
           <h1>Login</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLogin}>
             <input
               type="text"
               placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              name="username"
+              onChange={handleChange}
             />
             <input
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              onChange={handleChange}
             />
+            {err && err}
             <button type="submit">Login</button>
           </form>
-          {message && <p>{message}</p>}
         </div>
       </div>
     </div>
