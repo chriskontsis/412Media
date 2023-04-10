@@ -14,12 +14,9 @@ const Login = () => {
     <div className="login">
       <div className="card">
         <div className="left">
-          <h1>Hello Worlds</h1>
+          <h1>CSE412 Media</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Perspiciatis corporis magnam maxime laborum nesciunt earum,
-            recusandae dolores consequuntur eos. Laboriosam consectetur, placeat
-            officia excepturi nulla enim optio iste cupiditate eius!
+          Welcome to CSE412 Media
           </p>
           <span>Don't you have an account?</span>
           <Link to="/register">
