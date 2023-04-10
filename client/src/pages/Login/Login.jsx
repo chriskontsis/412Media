@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 // import React, { useState } from 'react';
 import "./login.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
 
@@ -15,6 +15,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
+  const history = useHistory();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -25,6 +27,7 @@ const Login = () => {
       if (response.data.success) {
         setMessage('Login successful');
         login();
+        history.push('/home');
       } else {
         setMessage('Invalid username or password');
       }
