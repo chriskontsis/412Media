@@ -1,37 +1,60 @@
-import React from "react";
+// import React from "react";
+import React, { useState } from "react";
 import "./register.scss";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
+  // State for form data
+  const [formData, setFormData] = useState({});
+
+  // Handle input changes and update the form data state
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Send form data to the server
+      await axios.post("/register", formData);
+      
+      // Show success message
+      alert("Registration successful");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
   return (
     <div className="register">
       <div className="card">
         <div className="left">
-          <h1>Hello Worlds</h1>
+          <h1>CSE412 Media</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Perspiciatis corporis magnam maxime laborum nesciunt earum,
-            recusandae dolores consequuntur eos. Laboriosam consectetur, placeat
-            officia excepturi nulla enim optio iste cupiditate eius!
+            Welcome to CSE412 Media Please Register Your Account.
           </p>
-          <span>Do you have an account?</span>
+          <span>Already have an account?</span>
           <Link to="/login">
             <button>Login</button>
           </Link>
         </div>
         <div className="right">
           <h1>Register</h1>
-          <form action="">
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-            <input type="text" placeholder="First Name" />
-            <input type="text" placeholder="Last Name" />
-            <input type="text" placeholder="Email" />
-            <input type="text" placeholder="Gender" />
-            <input type="text" placeholder="Hometown" />
-            <input type="text" placeholder="Gender" />
-            <input type="text" placeholder="Date of Birth" />
-            <button>Register</button>
+          <form onSubmit={handleSubmit}>
+          <input type="text" name="username" placeholder="Username" onChange={handleChange} />
+          <input type="password" name="password" placeholder="Password" onChange={handleChange} />
+          <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} />
+          <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} />
+          <input type="text" name="email" placeholder="Email" onChange={handleChange} />
+          <input type="text" name="hometown" placeholder="Hometown" onChange={handleChange} />
+          <input type="text" name="gender" placeholder="Gender" onChange={handleChange} />
+          <input type="text" name="dateOfBirth" placeholder="Date of Birth" onChange={handleChange} />
+          {/* Change button type to submit */}
+          <button type="submit">Register</button>
           </form>
         </div>
       </div>
