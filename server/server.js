@@ -84,6 +84,25 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/albums", async (req, res) => {
+    try {
+      const { name, userId, desc, img, date } = req.body;
+  
+      const query = `
+        INSERT INTO Albums (User_id, Name, Date)
+        VALUES ($1, $2, $3)
+        RETURNING *;
+      `;
+  
+      const result = await pool.query(query, [userId, name, date]);
+      res.status(201).json(result.rows[0]);
+    } catch (error) {
+      console.error("Error saving new album:", error);
+      res.status(500).json({ message: "Error saving new album" });
+    }
+  });
+
+
 app.listen(3005, () => {
   console.log("server is up and listening on port 3005");
 });
