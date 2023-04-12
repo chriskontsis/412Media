@@ -14,6 +14,7 @@ app.use(
 );
 // Parse incoming JSON payloads
 app.use(express.json());
+app.use(cookieParser());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
@@ -84,24 +85,25 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/albums", async (req, res) => {
-    try {
-      const { name, userId, desc, img, date } = req.body;
-  
-      const query = `
-        INSERT INTO Albums (User_id, Name, Date)
-        VALUES ($1, $2, $3)
-        RETURNING *;
-      `;
-  
-      const result = await pool.query(query, [userId, name, date]);
-      res.status(201).json(result.rows[0]);
-    } catch (error) {
-      console.error("Error saving new album:", error);
-      res.status(500).json({ message: "Error saving new album" });
-    }
+app.get("/", async (req, res) => {
+  const token = req.cookies.accessToken;
+  let id = -1;
+  if (!token) res.status(401).json("Not logged in");
+  jwt.verify(token, "password", (err, userInfo) => {
+    if (err) return res.status(403).json("Token invalid");
+    id = userInfo.id;
   });
-
+  try {
+    const result = await pool.query(
+      "SELECT p.*,  u.user_id AS userId, fname FROM Photos as p JOIN users AS u ON (p.user_id = u.user_id) LEFT JOIN friends AS f ON (p.user_id = f.friend_id) WHERE f.user_id = $1 OR p.user_id = $2",
+      [id, id]
+    );
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500);
+  }
+});
 
 app.listen(3005, () => {
   console.log("server is up and listening on port 3005");
