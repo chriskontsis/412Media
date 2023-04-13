@@ -48,35 +48,6 @@ CREATE TABLE Friends(
     Date DATE,
     FOREIGN KEY (User_id) REFERENCES Users(User_id)
 );
-INSERT INTO Users(
-        user - id,
-        fname,
-        lname,
-        email,
-        password,
-        dob,
-        hometown,
-        gender,
-        contribution
-    )
-VALUES (
-        new_user - id,
-        < current_user > fname,
-        < current_user > lname,
-        < current_user > email,
-        < current_user > password,
-        < current_user > dob,
-        < current_user > hometown,
-        < current_user > gender,
-        < current_user > contribution
-    )
-INSERT INTO Albums (album_id, user_id, name, date)
-VALUES (
-        new_album_id,
-        < current_user > user_id,
-        < current_user > name,
-        date.now
-    )
 INSERT INTO Tags (tag_id, tag_name, photo_id)
 VALUES (
         < current user > new_tag_id,
@@ -91,7 +62,10 @@ VALUES (
         < current user > album_id
     )
 INSERT INTO Likes (user_id, photo_id)
-VALUES (< current user > user_id, < current user > photo_id)
+VALUES (
+        < current user > user_id,
+        < current user > photo_id
+    )
 INSERT INTO Friends (user - id, friend_id, date)
 VALUES(
         < current user > user_id,

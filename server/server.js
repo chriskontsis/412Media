@@ -4,6 +4,7 @@ const pool = require("./db");
 const app = express();
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 
 // Enable CORS middleware
 app.use(
@@ -95,13 +96,64 @@ app.get("/", async (req, res) => {
   });
   try {
     const result = await pool.query(
-      "SELECT p.*,  u.user_id AS userId, fname FROM Photos as p JOIN users AS u ON (p.user_id = u.user_id) LEFT JOIN friends AS f ON (p.user_id = f.friend_id) WHERE f.user_id = $1 OR p.user_id = $2",
+      `SELECT p.*,  u.user_id AS userId, fname
+      FROM Photos as p 
+      JOIN users AS u ON (p.user_id = u.user_id) 
+      LEFT JOIN friends AS f ON (p.user_id = f.friend_id) 
+      WHERE f.user_id = $1 OR p.user_id = $2
+      ORDER BY p.postdate DESC`,
       [id, id]
     );
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
     res.status(500);
+  }
+});
+
+app.get("/comments", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT c.*,  u.user_id AS userId, fname, username
+      FROM comments as c 
+      JOIN users AS u ON (c.user_id = u.user_id) 
+      WHERE c.photo_id = $1  
+      ORDER BY c.createdAt DESC`,
+      [req.query.postId]
+    );
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500);
+  }
+});
+
+app.post("/comments", async (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in");
+  let userId = -1;
+  jwt.verify(token, "password", (err, userInfo) => {
+    if (err) return res.status(403).json("Invalid Token");
+    userId = userInfo.id;
+  });
+
+  console.log(req.body);
+  const cid = uuidv4();
+  try {
+    const result = await pool.query(
+      "INSERT INTO comments (c_id, user_id, photo_id, commenttext, createdat) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [
+        // (cid, userId, req.body.postId, req.body.desc, "2023-4-5")
+        cid,
+        userId,
+        req.body.postId,
+        req.body.desc,
+        "2023-4-13",
+      ]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
   }
 });
 

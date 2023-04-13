@@ -47,7 +47,7 @@ const Post = ({ post }) => {
             <ShareOutlinedIcon />
           </div>
         </div>
-        {commentOpen && <Comments />}
+        {commentOpen && <Comments postId={post.photo_id} key={post.photo_id} />}
       </div>
     </div>
   );
