@@ -38,7 +38,7 @@ CREATE TABLE Likes (
     FOREIGN KEY photo_id REFERENCES photos(photo_id)
 );
 CREATE TABLE comments (
-    c_id UUID PRIMARY KEY,
+    c_id SERIAL PRIMARY KEY,
     user_id INTEGER,
     photo_id INTEGER,
     commentText VARCHAR(100),
