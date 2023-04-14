@@ -10,6 +10,7 @@ import Comments from "../comments/Comments";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
+import profilePic from "../../assets/profilePic.png";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -21,8 +22,6 @@ const Post = ({ post }) => {
       return res.data;
     })
   );
-  console.log(data);
-
   const mutation = useMutation(
     (liked) => {
       try {
@@ -53,13 +52,13 @@ const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            {/* <img src={post.profilePic} alt="" /> */}
+            <img src={profilePic} alt="" />
             <div className="details">
               <Link
                 to={`/profile/${post.user_id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <span className="name">{post.fname}</span>
+                <span className="name">{post.username}</span>
               </Link>
             </div>
           </div>
@@ -85,7 +84,7 @@ const Post = ({ post }) => {
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
-            12 Comments
+            Comments
           </div>
           <div className="item">
             <ShareOutlinedIcon />

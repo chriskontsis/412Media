@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./leftBar.scss";
 import { AuthContext } from "../../context/authContext";
-
+import profilePic from "../../assets/profilePic.png";
 const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
   return (
@@ -9,6 +9,7 @@ const LeftBar = () => {
       <div className="container">
         <div className="menu">
           <div className="user">
+            <img src={profilePic} alt=""></img>
             <span>{currentUser.fname + " " + currentUser.lname}</span>
           </div>
           <div className="item">

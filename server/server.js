@@ -40,9 +40,8 @@ app.post("/register", async (req, res) => {
     const contrib = 0;
     // Insert new user data into the users table
     const newUser = await pool.query(
-      "INSERT INTO users (user_id, username, pwd, fname, lname, email, hometown, gender, dob, contribution) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+      "INSERT INTO users (username, pwd, fname, lname, email, hometown, gender, dob, contribution) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
       [
-        id,
         username,
         password,
         firstName,
@@ -96,7 +95,7 @@ app.get("/", async (req, res) => {
   });
   try {
     const result = await pool.query(
-      `SELECT p.*,  u.user_id AS userId, fname
+      `SELECT p.*,  u.user_id AS userId, fname, username
       FROM Photos as p 
       JOIN users AS u ON (p.user_id = u.user_id) 
       LEFT JOIN friends AS f ON (p.user_id = f.friend_id) 
@@ -138,18 +137,10 @@ app.post("/comments", async (req, res) => {
   });
 
   console.log(req.body);
-  const cid = uuidv4();
   try {
     const result = await pool.query(
-      "INSERT INTO comments (c_id, user_id, photo_id, commenttext, createdat) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [
-        // (cid, userId, req.body.postId, req.body.desc, "2023-4-5")
-        cid,
-        userId,
-        req.body.postId,
-        req.body.desc,
-        "2023-4-13",
-      ]
+      "INSERT INTO comments (user_id, photo_id, commenttext, createdat) VALUES ($1, $2, $3, $4) RETURNING *",
+      [userId, req.body.postId, req.body.desc, "2023-4-13"]
     );
     res.json(result.rows);
   } catch (err) {

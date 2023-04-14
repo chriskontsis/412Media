@@ -1,27 +1,28 @@
 CREATE TABLE Users (
-    user_id INTEGER PRIMARY KEY,
+    user_id SERIAL PRIMARY KEY,
     fname VARCHAR(16),
     lname VARCHAR(16),
     email VARCHAR(30),
     password VARCHAR(20),
     hometown VARCHAR(20),
+    gender VARCHAR(20),
     contribution INTEGER
 );
 CREATE TABLE Albums (
-    Album_id INTEGER PRIMARY KEY,
+    Album_id SERIAL PRIMARY KEY,
     User_id INTEGER,
     Name VARCHAR(20),
     Date DATE,
     FOREIGN KEY (User_id) REFERENCES Users(User_id)
 );
 CREATE TABLE Tags (
-    Tag_id INTEGER PRIMARY KEY,
+    Tag_id SERIAL PRIMARY KEY,
     Tag_name VARCHAR(20),
     Photo_id INTEGER,
     FOREIGN KEY (Photo_id) REFERENCES Photos(Photo_id)
 );
 CREATE TABLE Photos (
-    Photo_id INTEGER PRIMARY KEY,
+    Photo_id SERIAL PRIMARY KEY,
     user_id INTEGER,
     Caption VARCHAR(50),
     Date DATE,
@@ -30,9 +31,11 @@ CREATE TABLE Photos (
     FOREIGN KEY (Album_id) REFERENCES Albums(Album_id) FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 CREATE TABLE Likes (
-    User_id INTEGER,
-    Like_id INTEGER,
-    PRIMARY KEY (User_id, Like_id)
+    like_id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    photo_id INTEGER,
+    FOREIGN KEY user_id REFERENCES users(user_id),
+    FOREIGN KEY photo_id REFERENCES photos(photo_id)
 );
 CREATE TABLE comments (
     c_id UUID PRIMARY KEY,
