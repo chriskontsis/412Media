@@ -5,13 +5,12 @@ import { makeRequest } from "../../axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const Comments = ({ postId }) => {
-  const { currentUser } = useContext(AuthContext);
+  //const { currentUser } = useContext(AuthContext);
   const [desc, setDesc] = useState("");
   const queryClient = useQueryClient();
 
   const { isLoading, error, data } = useQuery(["/comments"], () =>
     makeRequest.get("/comments?postId=" + postId).then((res) => {
-      console.log(res.data.rows);
       return res.data.rows;
     })
   );

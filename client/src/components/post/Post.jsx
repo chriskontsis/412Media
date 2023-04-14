@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import "./post.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
@@ -7,12 +7,47 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { makeRequest } from "../../axios";
+import { AuthContext } from "../../context/authContext";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const { currentUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
-  const liked = false;
+  const { isLoading, error, data } = useQuery(["/likes", post.photo_id], () =>
+    makeRequest.get("/likes?postId=" + post.photo_id).then((res) => {
+      return res.data;
+    })
+  );
+  console.log(data);
 
+  const mutation = useMutation(
+    (liked) => {
+      try {
+        console.log("in try statment");
+        if (liked) return makeRequest.delete("/likes?postId=" + post.photo_id);
+        return makeRequest.post("/likes", { postId: post.photo_id });
+      } catch (err) {
+        console.log(err);
+        throw err; // add this line
+      }
+    },
+    {
+      onSuccess: () => {
+        console.log("Mutation successful:");
+        queryClient.invalidateQueries(["/likes"]);
+      },
+      onError: (error) => {
+        console.log("Mutation error:", error);
+      },
+    }
+  );
+
+  const handleLike = () => {
+    mutation.mutate(data.includes(currentUser.user_id));
+  };
   return (
     <div className="post">
       <div className="container">
@@ -36,8 +71,14 @@ const Post = ({ post }) => {
         </div>
         <div className="info">
           <div className="item">
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            12 Likes
+            {isLoading ? (
+              "Loading..."
+            ) : data.includes(currentUser.user_id) ? (
+              <FavoriteOutlinedIcon onClick={handleLike} />
+            ) : (
+              <FavoriteBorderOutlinedIcon onClick={handleLike} />
+            )}
+            {isLoading ? "likes loading" : data.length} Likes
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />

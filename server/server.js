@@ -157,6 +157,60 @@ app.post("/comments", async (req, res) => {
   }
 });
 
+app.get("/likes", async (req, res) => {
+  ß;
+  try {
+    const result = await pool.query(
+      "SELECT user_id FROM likes WHERE photo_id = $1",
+      [req.query.postId]
+    );
+    ß;
+    res.status(200).json(result.rows.map((like) => like.user_id));
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.post("/likes", async (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in");
+  let userId = -1;
+  jwt.verify(token, "password", (err, userInfo) => {
+    if (err) return res.status(403).json("Invalid Token");
+    userId = userInfo.id;
+  });
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO likes (photo_id, user_id) VALUES ($1, $2)",
+      [req.body.postId, userId]
+    );
+    return res.status(200).json("Post liked");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.delete("/likes", async (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in");
+  let userId = -1;
+  jwt.verify(token, "password", (err, userInfo) => {
+    if (err) return res.status(403).json("Invalid Token");
+    userId = userInfo.id;
+  });
+
+  try {
+    const result = await pool.query(
+      "DELETE FROM likes WHERE user_id = $1 AND photo_id = $2",
+      [userId, req.query.postId]
+    );
+    res.status(200).json("Post unliked");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.listen(3005, () => {
   console.log("server is up and listening on port 3005");
 });

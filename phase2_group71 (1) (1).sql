@@ -34,20 +34,23 @@ CREATE TABLE Likes (
     Like_id INTEGER,
     PRIMARY KEY (User_id, Like_id)
 );
-CREATE TABLE Comments(
-    Comment_id INTEGER PRIMARY KEY,
-    Photo_id INTEGER,
-    Text VARCHAR(20),
-    Date DATE,
-    Owner VARCHAR(20),
-    FOREIGN KEY (Photo_id) REFERENCES Photos(Photo_id)
+CREATE TABLE comments (
+    c_id UUID PRIMARY KEY,
+    user_id INTEGER,
+    photo_id INTEGER,
+    commentText VARCHAR(100),
+    createdAt DATE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (photo_id) REFERENCES photos(photo_id)
 );
-CREATE TABLE Friends(
-    User_id INTEGER,
-    Friend_id INTEGER,
-    Date DATE,
-    FOREIGN KEY (User_id) REFERENCES Users(User_id)
-);
+CREATE TABLE friends (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    friend_id INTEGER,
+    dayFormed DATE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (friend_id) REFERENCES users(user_id)
+)
 INSERT INTO Tags (tag_id, tag_name, photo_id)
 VALUES (
         < current user > new_tag_id,
