@@ -158,13 +158,11 @@ app.post("/comments", async (req, res) => {
 });
 
 app.get("/likes", async (req, res) => {
-  ß;
   try {
     const result = await pool.query(
       "SELECT user_id FROM likes WHERE photo_id = $1",
       [req.query.postId]
     );
-    ß;
     res.status(200).json(result.rows.map((like) => like.user_id));
   } catch (err) {
     console.error(err);

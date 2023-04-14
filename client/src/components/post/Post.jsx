@@ -74,7 +74,10 @@ const Post = ({ post }) => {
             {isLoading ? (
               "Loading..."
             ) : data.includes(currentUser.user_id) ? (
-              <FavoriteOutlinedIcon onClick={handleLike} />
+              <FavoriteOutlinedIcon
+                style={{ color: "red" }}
+                onClick={handleLike}
+              />
             ) : (
               <FavoriteBorderOutlinedIcon onClick={handleLike} />
             )}
