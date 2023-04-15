@@ -142,6 +142,11 @@ app.post("/comments", async (req, res) => {
       "INSERT INTO comments (user_id, photo_id, commenttext, createdat) VALUES ($1, $2, $3, $4) RETURNING *",
       [userId, req.body.postId, req.body.desc, "2023-4-13"]
     );
+
+    await pool.query(
+      "UPDATE users SET contribution = contribution + 1 WHERE users.user_id = $1",
+      [userId]
+    );
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -195,6 +200,33 @@ app.delete("/likes", async (req, res) => {
       [userId, req.query.postId]
     );
     res.status(200).json("Post unliked");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/contribution", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT username, contribution FROM users ORDER BY contribution DESC LIMIT 10 "
+    );
+    return res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/searchComments", async (req, res) => {
+  console.log(req.query.input);
+  try {
+    const result = await pool.query(
+      `SELECT fname, lname FROM users JOIN comments as c 
+      ON (users.user_id = c.user_id)
+      WHERE c.commentText LIKE concat('%', $1::text, '%')`,
+      [req.query.input]
+    );
+    console.log(result.rows);
+    res.status(200).json(result.rows);
   } catch (err) {
     console.error(err);
   }
