@@ -250,6 +250,24 @@ app.get("/searchComments", async (req, res) => {
   }
 });
 
+app.get("/profilePosts", async (req, res) => {
+  console.log(req.query.userId);
+  try {
+    const result = await pool.query(
+      `SELECT p.*, username
+      FROM photos AS p
+      JOIN users AS u ON (u.user_id = p.user_id)
+      WHERE p.user_id = $1
+      ORDER BY p.postdate DESC`,
+      [req.query.userId]
+    );
+    console.log(result);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.listen(3005, () => {
   console.log("server is up and listening on port 3005");
 });

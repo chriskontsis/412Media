@@ -3,6 +3,7 @@ import "./albums.scss";
 import axios from "axios";
 import Album from "../album/Album";
 import { AuthContext } from "../../context/authContext";
+import Share from "../share/Share";
 const Albums = () => {
   const [albums, setAlbums] = useState([
     // ... initial album data
@@ -29,27 +30,16 @@ const Albums = () => {
       img: "https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600",
       date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD format
     };
-  
+
     saveNewAlbum(newAlbum);
-  
+
     setAlbums([...albums, newAlbum]);
     setNewAlbumName("");
   };
-  
+
   return (
     <div className="albums">
-      <div className="create-album">
-        <input
-          type="text"
-          placeholder="New album name"
-          value={newAlbumName}
-          onChange={handleNewAlbumNameChange}
-        />
-        <button onClick={addNewAlbum}>Create Album</button>
-      </div>
-      {albums.map((album) => (
-        <Album album={album} key={album.id} />
-      ))}
+      <div className="create-album"></div>
     </div>
   );
 };
