@@ -2,40 +2,12 @@ import React, { useContext, useState } from "react";
 import "./leftBar.scss";
 import { AuthContext } from "../../context/authContext";
 import profilePic from "../../assets/profilePic.png";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
 import { makeRequest } from "../../axios";
 
 const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [inputValue, setInputValue] = useState("");
   const [userComments, setUserComments] = useState([]);
-
-  // const { isLoading, error, data } = useQuery(() =>
-  //   makeRequest.get("/searchComments?input=" + inputValue).then((res) => {
-  //     return res.data;
-  //   })
-  // );
-
-  // const mutation = useMutation(
-  //   (toSearch) => {
-  //     try {
-  //       console.log(toSearch);
-  //       return makeRequest.get("/searchComments", inputValue);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(["/searchComments"]);
-  //     },
-  //   }
-  // );
 
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
@@ -96,9 +68,12 @@ const LeftBar = () => {
             ></input>
           </div>
           {userComments.map((comment) => (
-            <span key={comment.fname}>
-              {comment.fname + " " + comment.lname}
-            </span>
+            <div className="info">
+              <span key={comment.fname}>
+                {comment.fname + " " + comment.lname}
+              </span>
+              <span>{comment.ocurr}</span>
+            </div>
           ))}
         </div>
       </div>

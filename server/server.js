@@ -97,13 +97,28 @@ app.get("/", async (req, res) => {
     const result = await pool.query(
       `SELECT p.*,  u.user_id AS userId, fname, username
       FROM Photos as p 
-      JOIN users AS u ON (p.user_id = u.user_id) 
-      LEFT JOIN friends AS f ON (p.user_id = f.friend_id) 
+      JOIN users AS u ON (p.user_id = u.user_id)  
+      LEFT JOIN friends AS f ON (p.user_id = f.friend_id)
       WHERE f.user_id = $1 OR p.user_id = $2
       ORDER BY p.postdate DESC`,
       [id, id]
     );
     res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500);
+  }
+});
+
+app.get("/tags", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT tag_id, tag_text
+      FROM tags
+      WHERE tags.photo_id = $1`,
+      [req.query.postId]
+    );
+    res.status(200).json(result.rows);
   } catch (err) {
     console.error(err);
     res.status(500);
@@ -220,9 +235,12 @@ app.get("/searchComments", async (req, res) => {
   console.log(req.query.input);
   try {
     const result = await pool.query(
-      `SELECT fname, lname FROM users JOIN comments as c 
+      `SELECT COUNT(users.user_id) as ocurr, fname, lname FROM users 
+      JOIN comments as c 
       ON (users.user_id = c.user_id)
-      WHERE c.commentText LIKE concat('%', $1::text, '%')`,
+      WHERE c.commentText LIKE concat('%', $1::text, '%')
+      GROUP BY users.user_id
+      ORDER BY ocurr DESC`,
       [req.query.input]
     );
     console.log(result.rows);

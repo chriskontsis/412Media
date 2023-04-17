@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./comments.scss";
-import { AuthContext } from "../../context/authContext";
 import { makeRequest } from "../../axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -21,6 +20,8 @@ const Comments = ({ postId }) => {
     },
     {
       onSuccess: () => {
+        makeRequest.get("/contribution");
+        queryClient.invalidateQueries(["/contribution"]);
         queryClient.invalidateQueries(["/comments"]);
       },
     }

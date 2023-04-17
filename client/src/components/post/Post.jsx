@@ -5,6 +5,7 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -22,10 +23,18 @@ const Post = ({ post }) => {
       return res.data;
     })
   );
+  const {
+    isLoading: tagsLoading,
+    error: tagsError,
+    data: tagsData,
+  } = useQuery(["/tags", post.photo_id], () =>
+    makeRequest.get("/tags?postId=" + post.photo_id).then((res) => {
+      return res.data;
+    })
+  );
   const mutation = useMutation(
     (liked) => {
       try {
-        console.log("in try statment");
         if (liked) return makeRequest.delete("/likes?postId=" + post.photo_id);
         return makeRequest.post("/likes", { postId: post.photo_id });
       } catch (err) {
@@ -87,7 +96,17 @@ const Post = ({ post }) => {
             Comments
           </div>
           <div className="item">
-            <ShareOutlinedIcon />
+            <LocalOfferOutlinedIcon />
+            {tagsLoading
+              ? "loading.."
+              : tagsData.map((tag) => (
+                  <span
+                    key={tag.tag_id}
+                    style={{ textDecoration: "underline" }}
+                  >
+                    {tag.tag_text}
+                  </span>
+                ))}
           </div>
         </div>
         {commentOpen && <Comments postId={post.photo_id} key={post.photo_id} />}

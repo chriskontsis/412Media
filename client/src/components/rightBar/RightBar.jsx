@@ -10,8 +10,6 @@ const RightBar = () => {
     })
   );
 
-  console.log(data);
-
   return (
     <div className="rightBar">
       <div className="container">
