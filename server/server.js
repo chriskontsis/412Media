@@ -24,8 +24,7 @@ const contribution = 0;
 // Route for user registration
 app.post("/register", async (req, res) => {
   try {
-    // Destructure user data from the request body
-    console.log(req.body);
+    // Destructure user data from the request bod
     const id = 1011;
     const {
       username,
@@ -55,7 +54,6 @@ app.post("/register", async (req, res) => {
     );
 
     res.json(newUser.rows[0]);
-    console.log("post");
   } catch (err) {
     console.error(err.message);
   }
@@ -151,7 +149,6 @@ app.post("/comments", async (req, res) => {
     userId = userInfo.id;
   });
 
-  console.log(req.body);
   try {
     const result = await pool.query(
       "INSERT INTO comments (user_id, photo_id, commenttext, createdat) VALUES ($1, $2, $3, $4) RETURNING *",
@@ -232,7 +229,6 @@ app.get("/contribution", async (req, res) => {
 });
 
 app.get("/searchComments", async (req, res) => {
-  console.log(req.query.input);
   try {
     const result = await pool.query(
       `SELECT COUNT(users.user_id) as ocurr, fname, lname FROM users 
@@ -243,7 +239,6 @@ app.get("/searchComments", async (req, res) => {
       ORDER BY ocurr DESC`,
       [req.query.input]
     );
-    console.log(result.rows);
     res.status(200).json(result.rows);
   } catch (err) {
     console.error(err);
@@ -260,13 +255,35 @@ app.get("/profilePosts", async (req, res) => {
       ORDER BY p.postdate DESC`,
       [req.query.userId]
     );
-    console.log(result);
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
   }
 });
 
+app.post("/addPhoto", async (req, res) => {
+  const imageUrl = req.body.imageUrl;
+  const albumName = req.body.albumName;
+  const tags = req.body.tags;
+
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in");
+  let userId = -1;
+  jwt.verify(token, "password", (err, userInfo) => {
+    if (err) return res.status(403).json("Invalid Token");
+    userId = userInfo.id;
+  });
+
+  try {
+    const albumId = await pool.query(
+      `SELECT album_id 
+      FROM albums
+      WHERE name = $1`,
+      [albumName]
+    );
+    console.log(albumId.rows[0].album_id);
+  } catch (err) {}
+});
 app.listen(3005, () => {
   console.log("server is up and listening on port 3005");
 });
