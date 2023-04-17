@@ -68,7 +68,31 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            flex-direction: column;
 
+            .dropdown {
+              position: relative;
+              display: inline-block;
+
+              button {
+                background: transparent;
+                border: none;
+                font-size: 12px;
+                color: gray;
+              }
+              .dropdownAlbums {
+                display: none;
+                position: absolute;
+                background: white;
+                width: 100%;
+              }
+              span {
+                display: block;
+                padding: 10px;
+              }
+
+            }
+           
             img {
               height: 20px;
             }

@@ -21,7 +21,7 @@ const Profile = () => {
   return (
     <div className="profile">
       <ProfileSearch />
-      <Share />
+      {userId === currentUser.user_id ? <Share /> : <></>}
       {error
         ? "An error occurred"
         : isLoading

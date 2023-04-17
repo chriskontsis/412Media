@@ -251,7 +251,6 @@ app.get("/searchComments", async (req, res) => {
 });
 
 app.get("/profilePosts", async (req, res) => {
-  console.log(req.query.userId);
   try {
     const result = await pool.query(
       `SELECT p.*, username
