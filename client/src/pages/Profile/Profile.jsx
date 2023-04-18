@@ -8,6 +8,7 @@ import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
 import { useLocation } from "react-router-dom";
 import Post from "../../components/post/Post";
+import profilePic from "../../assets/profilePic.png";
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
@@ -20,6 +21,19 @@ const Profile = () => {
 
   return (
     <div className="profile">
+      <div className="images">
+        <img src={profilePic} alt="" className="profilePic" />
+      </div>
+      <div className="profileContainer">
+        <div className="userInfo">
+          <div className="left"></div>
+          <div className="center">
+            <span>Jane Doe</span>
+            <button>Follow</button>
+          </div>
+          <div className="right"></div>
+        </div>
+      </div>
       <ProfileSearch />
       {userId === currentUser.user_id ? <Share /> : <></>}
       {error
