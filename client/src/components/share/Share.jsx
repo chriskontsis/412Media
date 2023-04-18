@@ -129,7 +129,7 @@ const Share = () => {
                   className="dropdownAlbums"
                   style={{ display: showAlbums ? "block" : "none" }}
                 >
-                  <span onClick={handleAlbumClick}>briones-album</span>
+                  <span onClick={handleAlbumClick}>first album</span>
                   <span onClick={handleAlbumClick}>album 2</span>
                   <span onClick={handleAlbumClick}>album 1</span>
                 </div>
