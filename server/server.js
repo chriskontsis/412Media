@@ -295,6 +295,11 @@ app.post("/addPhoto", async (req, res) => {
         [tag, pid.rows[0].photo_id, userId]
       );
     }
+    const contrib = await pool.query(
+      "UPDATE users SET contribution = contribution + 1 WHERE users.user_id = $1",
+      [userId]
+    );
+    return res.status(200).json("added post");
   } catch (err) {
     console.error(err);
   }

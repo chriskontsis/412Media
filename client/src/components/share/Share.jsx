@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./share.scss";
-import { useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 const Share = () => {
   const [desc, setDesc] = useState("");
@@ -13,12 +13,13 @@ const Share = () => {
   const [tags, setTags] = useState([]);
   const [buttonText, setButtonText] = useState("Select Album");
   const [isTagAdded, setIsTagAdded] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleAlbumClick = (event) => {
     const name = event.target.textContent;
     setAlbumName(name);
     setButtonText(name);
-    setShowAlbums(false); // hide the album list after selecting an album
+    setShowAlbums(false);
   };
   const [tagInputValue, setTagInputValue] = useState("");
 
@@ -54,13 +55,32 @@ const Share = () => {
     setTags([...tags, tagValue]);
   };
 
-  const handleClick = async () => {
-    makeRequest.post("/addPhoto", {
-      imageUrl: finalUrl,
-      albumName: albumName,
-      tags: tags,
-      desc: desc,
-    });
+  const mutation = useMutation(
+    () => {
+      return makeRequest.post("/addPhoto", {
+        imageUrl: finalUrl,
+        albumName: albumName,
+        tags: tags,
+        desc: desc,
+      });
+    },
+    {
+      onSuccess: () => {
+        console.log("success");
+        makeRequest.get("/contribution");
+        queryClient.invalidateQueries(["/contribution"]);
+        queryClient.invalidateQueries(["/profilePosts"]);
+      },
+    }
+  );
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    mutation.mutate();
+    setDesc("");
+    setImageUrl("");
+    setTags([]);
+    setAlbumName("Select Album");
   };
 
   return (
