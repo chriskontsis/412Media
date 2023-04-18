@@ -1,39 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import "./comments.scss";
-const Comments = () => {
-  const comments = [
-    {
-      id: 1,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam",
-      name: "John Doe",
-      userId: 1,
-      profilePicture:
-        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+import { makeRequest } from "../../axios";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+
+const Comments = ({ postId }) => {
+  //const { currentUser } = useContext(AuthContext);
+  const [desc, setDesc] = useState("");
+  const queryClient = useQueryClient();
+
+  const { isLoading, error, data } = useQuery(["/comments"], () =>
+    makeRequest.get("/comments?postId=" + postId).then((res) => {
+      return res.data.rows;
+    })
+  );
+
+  const mutation = useMutation(
+    (newComment) => {
+      return makeRequest.post("/comments", newComment);
     },
     {
-      id: 2,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem nequeaspernatur ullam aperiam",
-      name: "Jane Doe",
-      userId: 2,
-      profilePicture:
-        "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    },
-  ];
+      onSuccess: () => {
+        makeRequest.get("/contribution");
+        queryClient.invalidateQueries(["/contribution"]);
+        queryClient.invalidateQueries(["/comments"]);
+      },
+    }
+  );
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    mutation.mutate({ desc, postId });
+    setDesc("");
+  };
+
   return (
     <div className="comments">
       <div className="write">
-        <input type="text" placeholder="write a comment" />
-        <button>post</button>
+        <input
+          type="text"
+          placeholder="write a comment"
+          onChange={(e) => setDesc(e.target.value)}
+          value={desc}
+        />
+        <button onClick={handleClick}>post</button>
       </div>
-      {comments.map((comment) => (
-        <div className="comment">
-          <img src={comment.profilePicture} alt="" />
-          <div className="info">
-            <span>{comment.name}</span>
-            <p>{comment.desc}</p>
-          </div>
-        </div>
-      ))}
+      {isLoading
+        ? "loading.."
+        : data.map((comment) => (
+            <div className="comment" key={comment.c_id}>
+              {/* <img src={comment.profilePicture} alt="" /> */}
+              <div className="info">
+                <span>{comment.username}</span>
+                <p>{comment.commenttext}</p>
+              </div>
+            </div>
+          ))}
     </div>
   );
 };

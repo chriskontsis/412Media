@@ -26,7 +26,7 @@ const NavBar = () => {
       <div className="right">
         <PersonOutlineOutlinedIcon />
         <div className="user">
-          <span>{currentUser.name}</span>
+        {currentUser ? <span>{currentUser.fname}</span> : <span>Guest</span>}
         </div>
       </div>
     </div>
