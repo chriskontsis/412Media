@@ -1,11 +1,13 @@
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
+    username VARCHAR(20),
+    password VARCHAR(20),
     fname VARCHAR(16),
     lname VARCHAR(16),
     email VARCHAR(30),
-    password VARCHAR(20),
     hometown VARCHAR(20),
     gender VARCHAR(20),
+    dob DATE,
     contribution INTEGER
 );
 CREATE TABLE Albums (

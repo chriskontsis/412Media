@@ -25,7 +25,7 @@ const contribution = 0;
 app.post("/register", async (req, res) => {
   try {
     // Destructure user data from the request bod
-    const id = 1011;
+
     const {
       username,
       password,
@@ -240,6 +240,23 @@ app.get("/searchComments", async (req, res) => {
       [req.query.input]
     );
     res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/popularTags", async (req, res) => {
+  console.log("in tag query");
+  try {
+    const tags = await pool.query(
+      `SELECT COUNT(tag_text) as tagcount, tag_text
+        FROM tags
+        GROUP BY (tag_text)
+        ORDER BY tag_text DESC
+        LIMIT 5`
+    );
+    console.log(tags.rows);
+    res.status(200).json(tags.rows);
   } catch (err) {
     console.error(err);
   }
