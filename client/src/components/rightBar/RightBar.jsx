@@ -1,7 +1,15 @@
 import React from "react";
 import "./rightBar.scss";
+import { useQuery } from "react-query";
+import { makeRequest } from "../../axios";
 
 const RightBar = () => {
+  const { isLoading, error, data } = useQuery("/contribution", () =>
+    makeRequest.get("/contribution").then((res) => {
+      return res.data;
+    })
+  );
+
   return (
     <div className="rightBar">
       <div className="container">
@@ -28,54 +36,18 @@ const RightBar = () => {
         </div>
         <div className="item">
           <span>Highest Contributors</span>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <span>10 pts</span>
-          </div>
+          {error
+            ? "An error occurred"
+            : isLoading
+            ? "loading..."
+            : data.map((data) => (
+                <div className="user" key={data.username}>
+                  <div className="userInfo">
+                    <span>{data.username}</span>
+                  </div>
+                  <span>{data.contribution + "pts"}</span>
+                </div>
+              ))}
         </div>
       </div>
     </div>

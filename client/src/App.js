@@ -14,22 +14,26 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthContext } from "./context/authContext";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
+  const queryClient = new QueryClient();
 
   const Layout = () => {
     return (
-      <div>
-        <NavBar />
-        <div style={{ display: "flex" }}>
-          <LeftBar />
-          <div style={{ flex: 6 }}>
-            <Outlet />
+      <QueryClientProvider client={queryClient}>
+        <div>
+          <NavBar />
+          <div style={{ display: "flex" }}>
+            <LeftBar />
+            <div style={{ flex: 6 }}>
+              <Outlet />
+            </div>
+            <RightBar />
           </div>
-          <RightBar />
         </div>
-      </div>
+      </QueryClientProvider>
     );
   };
 
