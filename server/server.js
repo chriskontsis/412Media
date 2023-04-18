@@ -245,6 +245,22 @@ app.get("/searchComments", async (req, res) => {
   }
 });
 
+app.get("/searchTags", async (req, res) => {
+  try {
+    const result = await pool.query(
+      // complete TODO
+      `SELECT photo_id, user_id as photoID, userID
+       FROM tags
+       WHERE tag_text LIKE concat('%', $1::text, '%')`,
+      [req.query.input]
+    );
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+
 app.get("/popularTags", async (req, res) => {
   console.log("in tag query");
   try {
