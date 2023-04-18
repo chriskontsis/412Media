@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./profile.scss";
 import Albums from "../../components/albums/Albums";
 import ProfileSearch from "../../components/profileSearch/ProfileSearch";
@@ -12,6 +12,7 @@ import profilePic from "../../assets/profilePic.png";
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
+  const [showPhotos, setShowPhotos] = useState(false);
 
   const { isLoading, error, data } = useQuery(["/profilePosts"], () =>
     makeRequest.get("/profilePosts?userId=" + userId).then((res) => {
@@ -30,17 +31,26 @@ const Profile = () => {
           <div className="center">
             <span>Jane Doe</span>
             <button>Follow</button>
+            <div className="display">
+              <h3 style={{ textDecoration: "underline" }}>Photos</h3>
+              <h3>Albums</h3>
+            </div>
           </div>
           <div className="right"></div>
         </div>
       </div>
-      <ProfileSearch />
-      {userId === currentUser.user_id ? <Share /> : <></>}
-      {error
-        ? "An error occurred"
-        : isLoading
-        ? "loading..."
-        : data.map((post) => <Post post={post} key={post.photo_id} />)}
+      {showPhotos ? (
+        <>
+          {userId === currentUser.user_id ? <Share /> : <></>}
+          {error
+            ? "An error occurred"
+            : isLoading
+            ? "loading..."
+            : data.map((post) => <Post post={post} key={post.photo_id} />)}
+        </>
+      ) : (
+        <Albums />
+      )}
     </div>
   );
 };

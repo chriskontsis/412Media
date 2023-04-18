@@ -4,39 +4,23 @@ import axios from "axios";
 import Album from "../album/Album";
 import { AuthContext } from "../../context/authContext";
 import Share from "../share/Share";
+import { useQuery } from "react-query";
+import { makeRequest } from "../../axios";
+import { useLocation } from "react-router-dom";
 const Albums = () => {
-  const [albums, setAlbums] = useState([
-    // ... initial album data
-  ]);
-  const { currentUser } = useContext(AuthContext);
-  const [newAlbumName, setNewAlbumName] = useState("");
+  const userId = parseInt(useLocation().pathname.split("/")[2]);
 
-  const handleNewAlbumNameChange = (e) => {
-    setNewAlbumName(e.target.value);
-  };
-  const saveNewAlbum = async (newAlbum) => {
-    try {
-      await axios.post("http://localhost:3005/albums", newAlbum);
-    } catch (error) {
-      console.error("Error saving new album:", error);
+  const handleKeyDown = async (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      try {
+        const response = await makeRequest.get("/getAlbums?userId=" + userId);
+        const data = response.data;
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
-  const addNewAlbum = () => {
-    const newAlbum = {
-      id: albums.length + 1,
-      name: newAlbumName,
-      userId: currentUser.userId, // Use the current user ID from the AuthContext
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-      img: "https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD format
-    };
-
-    saveNewAlbum(newAlbum);
-
-    setAlbums([...albums, newAlbum]);
-    setNewAlbumName("");
-  };
-
   return (
     <div className="albums">
       <div className="create-album"></div>
