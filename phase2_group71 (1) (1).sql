@@ -21,6 +21,7 @@ CREATE TABLE Tags (
     Tag_id SERIAL PRIMARY KEY,
     Tag_name VARCHAR(20),
     Photo_id INTEGER,
+    User_id INTEGER,
     FOREIGN KEY (Photo_id) REFERENCES Photos(Photo_id)
 );
 CREATE TABLE Photos (
