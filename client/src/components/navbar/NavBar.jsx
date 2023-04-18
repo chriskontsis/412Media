@@ -7,11 +7,12 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { makeRequest } from "../../axios";
+import Posts from "../posts/Posts"; // Import the Posts component
 
 const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [inputValue, setInputValue] = useState("");
-  const [userTag, setUserTag] = useState([]);
+  const [taggedPhotos, setTaggedPhotos] = useState([]);
 
 
 
@@ -23,7 +24,7 @@ const NavBar = () => {
           "/searchTags?input=" + inputValue
         );
         const data = response.data;
-        setUserTag(data);
+        setTaggedPhotos(data);
         setInputValue("");
         console.log(data);
       } catch (err) {
@@ -50,6 +51,9 @@ const NavBar = () => {
           onKeyDown = {handleKeyDown}
           ></input>
         </div>
+      </div>
+      <div className="taggedPhotos">
+        <Posts taggedPhotos={taggedPhotos} />
       </div>
       <div className="right">
         <PersonOutlineOutlinedIcon />
