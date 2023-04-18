@@ -59,6 +59,7 @@ const Share = () => {
       imageUrl: finalUrl,
       albumName: albumName,
       tags: tags,
+      desc: desc,
     });
   };
 

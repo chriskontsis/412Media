@@ -265,6 +265,7 @@ app.post("/addPhoto", async (req, res) => {
   const imageUrl = req.body.imageUrl;
   const albumName = req.body.albumName;
   const tags = req.body.tags;
+  const desc = req.body.desc;
 
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in");
@@ -281,8 +282,22 @@ app.post("/addPhoto", async (req, res) => {
       WHERE name = $1`,
       [albumName]
     );
-    console.log(albumId.rows[0].album_id);
-  } catch (err) {}
+
+    const aid = albumId.rows[0].album_id;
+    const pid = await pool.query(
+      `INSERT INTO photos (user_id, caption, postdate, album_id, imageurl)
+      VALUES ($1, $2, $3, $4, $5) RETURNING photo_id`,
+      [userId, desc, "2023-4-18", aid, imageUrl]
+    );
+    for (const tag of tags) {
+      const inserttag = await pool.query(
+        "INSERT INTO tags (tag_text, photo_id, user_id) VALUES ($1, $2, $3)",
+        [tag, pid.rows[0].photo_id, userId]
+      );
+    }
+  } catch (err) {
+    console.error(err);
+  }
 });
 app.listen(3005, () => {
   console.log("server is up and listening on port 3005");
