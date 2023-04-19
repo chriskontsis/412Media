@@ -12,7 +12,23 @@ import profilePic from "../../assets/profilePic.png";
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-  const [showPhotos, setShowPhotos] = useState(false);
+  const [showPhotos, setShowPhotos] = useState(true);
+
+  const { isLoading: albumsLoading, data: albumData } = useQuery(
+    ["/findAlbums"],
+    () =>
+      makeRequest.get("/findAlbums?userId=" + userId).then((res) => {
+        return res.data.rows;
+      })
+  );
+
+  const { isLoading: userLoading, data: userData } = useQuery(
+    ["/findUsername"],
+    () =>
+      makeRequest.get("/findUsername?userId=" + userId).then((res) => {
+        return res.data.rows;
+      })
+  );
 
   const { isLoading, error, data } = useQuery(["/profilePosts"], () =>
     makeRequest.get("/profilePosts?userId=" + userId).then((res) => {
@@ -29,7 +45,7 @@ const Profile = () => {
         <div className="userInfo">
           <div className="left"></div>
           <div className="center">
-            <span>Jane Doe</span>
+            <span>{userLoading ? "loading..." : userData[0].username}</span>
             <button>Follow</button>
             <div className="display">
               <h3 style={{ textDecoration: "underline" }}>Photos</h3>

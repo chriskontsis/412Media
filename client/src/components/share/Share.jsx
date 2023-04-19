@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./share.scss";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
+import { useLocation } from "react-router-dom";
 const Share = () => {
   const [desc, setDesc] = useState("");
   const [showUrl, setShowUrl] = useState(false);
@@ -14,6 +15,15 @@ const Share = () => {
   const [buttonText, setButtonText] = useState("Select Album");
   const [isTagAdded, setIsTagAdded] = useState(false);
   const queryClient = useQueryClient();
+  const userId = parseInt(useLocation().pathname.split("/")[2]);
+
+  const { isLoading: albumsLoading, data: albumData } = useQuery(
+    ["/findAlbums"],
+    () =>
+      makeRequest.get("/findAlbums?userId=" + userId).then((res) => {
+        return res.data.rows;
+      })
+  );
 
   const handleAlbumClick = (event) => {
     const name = event.target.textContent;
@@ -129,9 +139,16 @@ const Share = () => {
                   className="dropdownAlbums"
                   style={{ display: showAlbums ? "block" : "none" }}
                 >
-                  <span onClick={handleAlbumClick}>first album</span>
+                  {/* <span onClick={handleAlbumClick}>first album</span>
                   <span onClick={handleAlbumClick}>album 2</span>
-                  <span onClick={handleAlbumClick}>album 1</span>
+                  <span onClick={handleAlbumClick}>album 1</span> */}
+                  {albumsLoading
+                    ? "loading..."
+                    : albumData.map((album) => (
+                        <span key={album.album_id} onClick={handleAlbumClick}>
+                          {album.name}
+                        </span>
+                      ))}
                 </div>
               </div>
             </div>

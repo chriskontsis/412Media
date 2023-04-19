@@ -456,7 +456,6 @@ app.get("/searchComments", async (req, res) => {
 });
 
 app.get("/popularTags", async (req, res) => {
-  console.log("in tag query");
   try {
     const tags = await pool.query(
       `SELECT COUNT(tag_text) as tagcount, tag_text
@@ -465,11 +464,34 @@ app.get("/popularTags", async (req, res) => {
         ORDER BY tag_text DESC
         LIMIT 5`
     );
-    console.log(tags.rows);
     res.status(200).json(tags.rows);
   } catch (err) {
     console.error(err);
   }
+});
+
+app.get("/findUsername", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT username FROM users WHERE user_id = $1",
+      [req.query.userId]
+    );
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/findAlbums", async (req, res) => {
+  console.log(req.query.userId);
+  try {
+    const albums = await pool.query(
+      `SELECT * FROM albums
+      WHERE user_id = $1`,
+      [req.query.userId]
+    );
+    res.status(200).json(albums);
+  } catch (err) {}
 });
 
 app.get("/profilePosts", async (req, res) => {
