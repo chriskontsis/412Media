@@ -7,13 +7,12 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { makeRequest } from "../../axios";
-import Posts from "../posts/Posts"; // Import the Posts component
+import Home from "../../pages/Home/Home" // Import the Posts component
 
 const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [inputValue, setInputValue] = useState("");
   const [taggedPhotos, setTaggedPhotos] = useState([]);
-
 
 
   const handleKeyDown = async (e) => {
@@ -53,7 +52,7 @@ const NavBar = () => {
         </div>
       </div>
       <div className="taggedPhotos">
-        <Posts taggedPhotos={taggedPhotos} />
+        <Home taggedPhotos={taggedPhotos} />
       </div>
       <div className="right">
         <PersonOutlineOutlinedIcon />
