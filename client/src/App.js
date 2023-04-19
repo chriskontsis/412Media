@@ -6,6 +6,7 @@ import Profile from "./pages/Profile/Profile";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import NavBar from "./components/navbar/NavBar";
+import TagSearchResults from './pages/TagSearchResults/TagSearchResults'; 
 import {
   createBrowserRouter,
   RouterProvider,
@@ -59,6 +60,10 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
+        },
+        {
+          path: '/search/:searchTerm',
+          element: <TagSearchResults />,
         },
       ],
     },
