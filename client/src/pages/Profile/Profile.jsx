@@ -12,7 +12,7 @@ import profilePic from "../../assets/profilePic.png";
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-  const [showPhotos, setShowPhotos] = useState(false);
+  const [showPhotos, setShowPhotos] = useState(true);
 
   const { isLoading: userLoading, data: userData } = useQuery(
     ["/findUsername"],

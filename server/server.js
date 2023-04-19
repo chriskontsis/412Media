@@ -510,6 +510,27 @@ app.get("/profilePosts", async (req, res) => {
   }
 });
 
+app.get("/findAlbumPosts", async (req, res) => {
+  const albumName = req.query.albumId;
+  const userId = req.query.userId;
+
+  try {
+    const albumId = await pool.query(
+      `SELECT album_id FROM albums WHERE user_id = $1 AND name = $2`,
+      [userId, albumName]
+    );
+    const result = await pool.query(
+      `SELECT p.* FROM photos
+      WHERE photos.user_id = $1
+      AND photos.album_id = $2`,
+      [userId, albumId]
+    );
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.post("/addPhoto", async (req, res) => {
   const imageUrl = req.body.imageUrl;
   const albumName = req.body.albumName;

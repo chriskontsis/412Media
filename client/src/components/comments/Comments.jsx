@@ -8,7 +8,7 @@ const Comments = ({ postId }) => {
   const [desc, setDesc] = useState("");
   const queryClient = useQueryClient();
 
-  const { isLoading, error, data } = useQuery(["/comments"], () =>
+  const { isLoading, data } = useQuery(["/comments"], () =>
     makeRequest.get("/comments?postId=" + postId).then((res) => {
       return res.data.rows;
     })
