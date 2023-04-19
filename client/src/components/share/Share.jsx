@@ -139,9 +139,6 @@ const Share = () => {
                   className="dropdownAlbums"
                   style={{ display: showAlbums ? "block" : "none" }}
                 >
-                  {/* <span onClick={handleAlbumClick}>first album</span>
-                  <span onClick={handleAlbumClick}>album 2</span>
-                  <span onClick={handleAlbumClick}>album 1</span> */}
                   {albumsLoading
                     ? "loading..."
                     : albumData.map((album) => (
@@ -153,7 +150,6 @@ const Share = () => {
               </div>
             </div>
             <div className="item">
-              {/* <img src="" alt="" /> */}
               <span onClick={() => setShowTags(!showTags)}>Add Tags</span>
               {showTags && (
                 <div>

@@ -12,15 +12,7 @@ import profilePic from "../../assets/profilePic.png";
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-  const [showPhotos, setShowPhotos] = useState(true);
-
-  const { isLoading: albumsLoading, data: albumData } = useQuery(
-    ["/findAlbums"],
-    () =>
-      makeRequest.get("/findAlbums?userId=" + userId).then((res) => {
-        return res.data.rows;
-      })
-  );
+  const [showPhotos, setShowPhotos] = useState(false);
 
   const { isLoading: userLoading, data: userData } = useQuery(
     ["/findUsername"],
@@ -36,6 +28,10 @@ const Profile = () => {
     })
   );
 
+  const handleH3Click = () => {
+    setShowPhotos((prevShowPhotos) => !prevShowPhotos);
+  };
+
   return (
     <div className="profile">
       <div className="images">
@@ -48,8 +44,24 @@ const Profile = () => {
             <span>{userLoading ? "loading..." : userData[0].username}</span>
             <button>Follow</button>
             <div className="display">
-              <h3 style={{ textDecoration: "underline" }}>Photos</h3>
-              <h3>Albums</h3>
+              <h3
+                onClick={handleH3Click}
+                style={{
+                  textDecoration: showPhotos ? "underline" : "none",
+                  cursor: "pointer",
+                }}
+              >
+                Photos
+              </h3>
+              <h3
+                onClick={handleH3Click}
+                style={{
+                  textDecoration: showPhotos ? "none" : "underline",
+                  cursor: "pointer",
+                }}
+              >
+                Albums
+              </h3>
             </div>
           </div>
           <div className="right"></div>
