@@ -50,8 +50,7 @@ const Albums = () => {
               : albumData.map((album) => (
                   <span key={album.album_id}>{album.name}</span>
                 ))}
-          </div>{" "}
-          d
+          </div>
         </div>
       </div>
 
