@@ -5,9 +5,6 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
-const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
-const { v4: uuidv4 } = require("uuid");
 
 // Enable CORS middleware
 app.use(
