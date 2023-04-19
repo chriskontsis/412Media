@@ -79,6 +79,51 @@ const Profile = () => {
       ) : (
         <Albums />
       )}
+      <div className="images">
+        <img src={profilePic} alt="" className="profilePic" />
+      </div>
+      <div className="profileContainer">
+        <div className="userInfo">
+          <div className="left"></div>
+          <div className="center">
+            <span>{userLoading ? "loading..." : userData[0].username}</span>
+            <button>Follow</button>
+            <div className="display">
+              <h3
+                onClick={handleH3Click}
+                style={{
+                  textDecoration: showPhotos ? "underline" : "none",
+                  cursor: "pointer",
+                }}
+              >
+                Photos
+              </h3>
+              <h3
+                onClick={handleH3Click}
+                style={{
+                  textDecoration: showPhotos ? "none" : "underline",
+                  cursor: "pointer",
+                }}
+              >
+                Albums
+              </h3>
+            </div>
+          </div>
+          <div className="right"></div>
+        </div>
+      </div>
+      {showPhotos ? (
+        <>
+          {userId === currentUser.user_id ? <Share /> : <></>}
+          {error
+            ? "An error occurred"
+            : isLoading
+            ? "loading..."
+            : data.map((post) => <Post post={post} key={post.photo_id} />)}
+        </>
+      ) : (
+        <Albums />
+      )}
     </div>
   );
 };

@@ -3,10 +3,10 @@ import "./home.scss";
 import Posts from "../../components/posts/Posts";
 import Share from "../../components/share/Share";
 
-const Home = () => {
+const Home = ({ taggedPhotos }) => {
   return (
     <div className="home">
-      <Posts />
+        <Posts />
     </div>
   );
 };

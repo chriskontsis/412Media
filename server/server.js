@@ -417,9 +417,10 @@ app.get("/searchTags", async (req, res) => {
   try {
     const result = await pool.query(
       // complete TODO
-      `SELECT photo_id, user_id as photoID, userID
-       FROM tags
-       WHERE tag_text LIKE concat('%', $1::text, '%')`,
+      `SELECT p.*
+      FROM tags t
+      JOIN photos p ON t.photo_id = p.photo_id
+      WHERE t.tag_name LIKE concat('%', $1::text, '%')`,
       [req.query.input]
     );
     res.status(200).json(result.rows);
