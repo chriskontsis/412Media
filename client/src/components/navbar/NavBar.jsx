@@ -7,31 +7,21 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { makeRequest } from "../../axios";
-
+import Home from "../../pages/Home/Home" // Import the Posts component
+import { useNavigate } from 'react-router-dom'; 
 const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [inputValue, setInputValue] = useState("");
-  const [userTag, setUserTag] = useState([]);
 
-
+  const navigate = useNavigate(); 
 
   const handleKeyDown = async (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       e.preventDefault();
-      try {
-        const response = await makeRequest.get(
-          "/searchTags?input=" + inputValue
-        );
-        const data = response.data;
-        setUserTag(data);
-        setInputValue("");
-        console.log(data);
-      } catch (err) {
-        console.error(err);
-      }
+      setInputValue('');
+      navigate(`/search/${inputValue}`); 
     }
   };
-
 
   return (
     <div className="navbar">
