@@ -500,6 +500,44 @@ app.delete("/removeFriend", async (req, res) => {
       .json({ message: "An error occurred while removing the friendship" });
   }
 });
+app.post("/addFriend", async (req, res) => {
+  try {
+    const { user_id, friend_id } = req.query;
+
+    // Generate a unique id for the new friendship record
+    const idResult = await pool.query(`SELECT max(id) + 1 AS next_id FROM friends`);
+    const newId = idResult.rows[0].next_id || 1;
+
+    await pool.query(
+      `INSERT INTO friends (id, user_id, friend_id, dayFormed) VALUES ($1, $2, $3, CURRENT_DATE)`,
+      [newId, user_id, friend_id]
+    );
+    res.status(200).json({ message: "Friendship added successfully" });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "An error occurred while adding the friendship" });
+  }
+});
+app.get("/checkFriendship", async (req, res) => {
+  try {
+    const { user_id, friend_id } = req.query;
+    const result = await pool.query(
+      `SELECT * FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1)`,
+      [user_id, friend_id]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).json({ status: "friends" });
+    } else {
+      res.status(200).json({ status: "not_friends" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred while checking friendship status" });
+  }
+});
 
 
 
