@@ -1,14 +1,15 @@
 import React, { useState, useContext } from "react";
 import "./albums.scss";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
 import Post from "../post/Post";
 const Albums = () => {
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-  const [showAlbums, setShowAlbums] = useState(true);
+  const [showAlbums, setShowAlbums] = useState(false);
   const [showPosts, setShowPosts] = useState(false);
   const [albumName, setAlbumName] = useState("");
+  const queryClient = useQueryClient();
 
   const { isLoading: albumsLoading, data: albumData } = useQuery(
     ["/findAlbums"],
@@ -30,9 +31,24 @@ const Albums = () => {
       })
   );
 
-  // const handleClick = async (e) => {
-  //   const name = e.target.textContent;
-  // };
+  const mutation = useMutation(
+    (data) => {
+      const { name, id } = data;
+      return makeRequest.get(`/findAlbumPosts?albumName=${name}&userId=${id}`);
+    },
+    {
+      onSuccess: () => {
+        console.log("success");
+      },
+    }
+  );
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const name = e.target.textContent;
+    setAlbumName(name);
+    mutation.mutate();
+  };
 
   return (
     <div className="albums">
@@ -48,7 +64,9 @@ const Albums = () => {
             {albumsLoading
               ? "loading..."
               : albumData.map((album) => (
-                  <span key={album.album_id}>{album.name}</span>
+                  <span key={album.album_id} onClick={handleClick}>
+                    {album.name}
+                  </span>
                 ))}
           </div>
         </div>
@@ -56,7 +74,7 @@ const Albums = () => {
 
       <div className="posts">
         {postError
-          ? "An error occurred"
+          ? "No Posts Availiable"
           : postsLoading
           ? "loading..."
           : postData.length === 0
