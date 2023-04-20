@@ -485,13 +485,12 @@ app.get("/friendsOfFriends", async (req, res) => {
 
 app.delete("/removeFriend", async (req, res) => {
   try {
-    const currentUser_ID = userInfo.id;
-    const { friend_id } = req.query; // Use req.query instead of req.body
+    const { user_id, friend_id } = req.query;
 
     await pool.query(
       `DELETE FROM friends
        WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1)`,
-      [currentUser_ID, friend_id]
+      [user_id, friend_id]
     );
     res.status(200).json({ message: "Friendship removed successfully" });
   } catch (err) {
@@ -501,6 +500,8 @@ app.delete("/removeFriend", async (req, res) => {
       .json({ message: "An error occurred while removing the friendship" });
   }
 });
+
+
 
 app.get("/contribution", async (req, res) => {
   try {

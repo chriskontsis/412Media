@@ -37,12 +37,13 @@ const FriendsList = () => {
 
   const removeFriend = async (friend_id) => {
     try {
-      await makeRequest.delete(`/removeFriend?friend_id=${friend_id}`);
+      await makeRequest.delete(`/removeFriend?user_id=${currentUser.user_id}&friend_id=${friend_id}`);
       refetch();
     } catch (error) {
       console.error("Error removing friend:", error);
     }
   };
+  
 
   return (
     <div className="friends-list">
