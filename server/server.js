@@ -416,10 +416,12 @@ app.get("/searchComments", async (req, res) => {
 app.get("/searchTags", async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT p.*
+      `SELECT p.*, u.username
       FROM photos AS p
       JOIN Tags AS t ON t.photo_id = p.photo_id
-      WHERE t.tag_text LIKE concat('%', $1::text, '%')`,
+      JOIN Users AS u ON u.user_id = p.user_id
+      WHERE t.tag_text LIKE concat('%', $1::text, '%')
+      `,
       [`%${req.query.input}%`]
     );
     // console.log(result);
@@ -428,6 +430,53 @@ app.get("/searchTags", async (req, res) => {
     console.error(err);
   }
 });
+
+app.get("/getFriends", async (req, res) => {
+  try {
+    const userId = req.query.user_id;
+    const result = await pool.query(
+      `SELECT
+        f.friend_id,
+        u.fname AS friend_fname,
+        u.lname AS friend_lname
+      FROM
+        friends AS f
+      JOIN
+        users AS u
+      ON
+        f.friend_id = u.user_id
+      WHERE
+        f.user_id = $1`,
+      [userId]
+    );
+    // console.log(result);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+
+app.delete("/removeFriend", async (req, res) => {
+  try {
+    const currentUser_ID = userInfo.id;
+    const { friend_id } = req.query; // Use req.query instead of req.body
+
+    await pool.query(
+      `DELETE FROM friends
+       WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1)`,
+      [currentUser_ID, friend_id]
+    );
+    res.status(200).json({ message: "Friendship removed successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred while removing the friendship" });
+  }
+});
+
+
+
+
 app.get("/contribution", async (req, res) => {
   try {
     const result = await pool.query(
