@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const DeleteAlbum = () => { 
-
+    const { currentUser } = useContext(AuthContext);
 
 
 
