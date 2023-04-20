@@ -6,7 +6,8 @@ import Profile from "./pages/Profile/Profile";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import NavBar from "./components/navbar/NavBar";
-import TagSearchResults from './pages/TagSearchResults/TagSearchResults'; 
+import TagSearchResults from './pages/TagSearchResults/TagSearchResults';
+import FriendsList from './components/FriendsList/FriendsList'; 
 import {
   createBrowserRouter,
   RouterProvider,
@@ -64,6 +65,10 @@ function App() {
         {
           path: '/search/:searchTerm',
           element: <TagSearchResults />,
+        },
+        {
+          path: '/friends/:id',
+          element: <FriendsList/>,
         },
       ],
     },

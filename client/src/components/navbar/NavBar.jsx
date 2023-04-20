@@ -8,18 +8,19 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { makeRequest } from "../../axios";
 import Home from "../../pages/Home/Home" // Import the Posts component
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+
 const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [inputValue, setInputValue] = useState("");
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       setInputValue('');
-      navigate(`/search/${inputValue}`); 
+      navigate(`/search/${inputValue}`);
     }
   };
 
@@ -33,10 +34,10 @@ const NavBar = () => {
         <GridViewOutlinedIcon />
         <div className="search">
           <SearchOutlinedIcon />
-          <input type="text" 
-          placeholder="Search Tags..." 
-          value = {inputValue} 
-          onChange={(e) => setInputValue(e.target.value)} 
+          <input type="text"
+          placeholder="Search Tags..."
+          value = {inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           onKeyDown = {handleKeyDown}
           ></input>
         </div>
@@ -44,7 +45,13 @@ const NavBar = () => {
       <div className="right">
         <PersonOutlineOutlinedIcon />
         <div className="user">
-        {currentUser ? <span>{currentUser.fname}</span> : <span>Guest</span>}
+          {currentUser ? (
+            <Link to={`/profile/${currentUser.user_id}`} style={{ textDecoration: "none" }}>
+              <span>{currentUser.fname}</span>
+            </Link>
+          ) : (
+            <span>Guest</span>
+          )}
         </div>
       </div>
     </div>
