@@ -10,28 +10,38 @@ const RightBar = () => {
     })
   );
 
+  const {
+    isLoading: friendsLoading,
+    error: friendsError,
+    data: friendsData,
+  } = useQuery("/friendsOfFriends", () =>
+    makeRequest.get("/friendsOfFriends?userId").then((res) => {
+      return res.data.rows;
+    })
+  );
+
+  console.log(friendsData);
+
   return (
     <div className="rightBar">
       <div className="container">
         <div className="item">
           <span>Friend Suggestions</span>
           <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <div className="buttons">
-              <button>Follow</button>
-              <button>Dismiss</button>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <span>Jane Doe</span>
-            </div>
-            <div className="buttons">
-              <button>Follow</button>
-              <button>Dismiss</button>
-            </div>
+            {friendsData && friendsData.length === 0
+              ? "No friends of friends"
+              : friendsData &&
+                friendsData.map((friend) => (
+                  <div className="friendContainer" key={friend.id}>
+                    <div className="userInfo">
+                      <span>{friend.username}</span>
+                    </div>
+                    <div className="buttons">
+                      <button>Follow</button>
+                      <button>Dismiss</button>
+                    </div>
+                  </div>
+                ))}
           </div>
         </div>
         <div className="item">

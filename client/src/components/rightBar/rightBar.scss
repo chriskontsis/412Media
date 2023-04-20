@@ -25,30 +25,32 @@
                 align-items: center;
                 justify-content: space-between;
                 margin: 20px 0px;
-                .userInfo {
+                .friendContainer {
                     display: flex;
                     align-items: center;
-                    gap: 20px;
-                    span {
-                        font-weight: 500;
-                        color: black;
-                    }
-                }
-                .buttons {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-
-                    button {
-                        border: none;
-                        padding: 5px;
-                        color: white;
-                        cursor: pointer;
-                        &:first-child {
-                            background-color: cornflowerblue;
+                    gap: 30px;
+                    .userInfo {
+                        span {
+                            font-weight: 500;
+                            color: black;
                         }
-                        &:last-child {
-                            background-color: lightcoral;
+                    }
+                    .buttons {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+
+                        button {
+                            border: none;
+                            padding: 5px;
+                            color: white;
+                            cursor: pointer;
+                            &:first-child {
+                                background-color: cornflowerblue;
+                            }
+                            &:last-child {
+                                background-color: lightcoral;
+                            }
                         }
                     }
                 }

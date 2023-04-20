@@ -414,7 +414,6 @@ app.get("/searchComments", async (req, res) => {
 });
 
 app.get("/searchTags", async (req, res) => {
-  console.log(req.query.input);
   try {
     const result = await pool.query(
       `SELECT p.*, u.username
@@ -452,6 +451,34 @@ app.get("/getFriends", async (req, res) => {
     );
     // console.log(result);
     res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/friendsOfFriends", async (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in");
+  let userId = -1;
+  jwt.verify(token, "password", (err, userInfo) => {
+    if (err) return res.status(403).json("Invalid Token");
+    userId = userInfo.id;
+  });
+
+  try {
+    const result = await pool.query(
+      `SELECT
+      u.*
+      FROM
+          users u
+          INNER JOIN friends ff ON u.user_id = ff.friend_id
+          INNER JOIN friends f ON ff.user_id = f.friend_id
+      WHERE
+          f.user_id = 1011
+          AND ff.friend_id NOT IN
+          (SELECT friend_id FROM friends WHERE user_id = 1011)`
+    );
+    res.status(200).json(result);
   } catch (err) {
     console.error(err);
   }
@@ -532,7 +559,6 @@ app.get("/findUsername", async (req, res) => {
 });
 
 app.get("/findAlbums", async (req, res) => {
-  console.log(req.query.userId);
   try {
     const albums = await pool.query(
       `SELECT * FROM albums
@@ -560,19 +586,20 @@ app.get("/profilePosts", async (req, res) => {
 });
 
 app.get("/findAlbumPosts", async (req, res) => {
-  const albumName = req.query.albumId;
+  const albumName = req.query.albumName;
   const userId = req.query.userId;
-
   try {
     const albumId = await pool.query(
       `SELECT album_id FROM albums WHERE user_id = $1 AND name = $2`,
       [userId, albumName]
     );
+    const aid = albumId.rows[0].album_id;
     const result = await pool.query(
-      `SELECT p.* FROM photos
-      WHERE photos.user_id = $1
-      AND photos.album_id = $2`,
-      [userId, albumId]
+      `SELECT p.* 
+      FROM photos AS p
+      WHERE p.user_id = $1
+      AND p.album_id = $2`,
+      [userId, aid]
     );
     res.status(200).json(result);
   } catch (err) {
