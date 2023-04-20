@@ -41,8 +41,13 @@ const Albums = () => {
               Select Album
             </button>
             <Link to="/create-album">
-              <button class="dropbtn" style={{border: "1px solid black"}}>
+              <button class="dropbtn" style={{border: "1px solid black", marginRight: "5px"}}>
                 Create Album
+              </button>
+            </Link>
+            <Link to="/delete-album">
+              <button class="dropbtn" style={{border: "1px solid black"}}>
+                Delete Album
               </button>
             </Link>
             <div

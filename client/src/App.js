@@ -8,7 +8,8 @@ import RightBar from "./components/rightBar/RightBar";
 import NavBar from "./components/navbar/NavBar";
 import TagSearchResults from './pages/TagSearchResults/TagSearchResults';
 import FriendsList from './components/FriendsList/FriendsList';
-import CreateAlbum from "./components/CreateAlbum/CreateAlbum"; 
+import CreateAlbum from "./components/CreateAlbum/CreateAlbum";
+import DeleteAlbum from "./components/DeleteAlbum/DeleteAlbum";  
 import {
   createBrowserRouter,
   RouterProvider,
@@ -74,6 +75,10 @@ function App() {
         {
           path: "/create-album",
           element: <CreateAlbum />,
+        },
+        {
+          path: "/delete-album",
+          element: <DeleteAlbum />,
         },
       ],
     },
