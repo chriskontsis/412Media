@@ -4,6 +4,7 @@ import Posts from '../../components/posts/Posts';
 import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
 import { useParams } from 'react-router-dom';
+import Post from '../../components/post/Post';
 
 const fetchSearchResults = async (searchTerm) => {
   const response = await makeRequest.get("/searchTags", {
@@ -25,8 +26,10 @@ const TagSearchResults = () => {
 
   return (
     <div className='tagSearchResults'>
-      <h1>Search Results for: {searchTerm}</h1>
-      <Posts data={data} />
+      <h1>Search Results Posts Containing Tag: {searchTerm}</h1>
+      {data.map((post) => (
+        <Post post={post} key={post.photo_id} />
+      ))}
     </div>
   );
 };

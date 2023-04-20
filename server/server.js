@@ -416,13 +416,13 @@ app.get("/searchComments", async (req, res) => {
 app.get("/searchTags", async (req, res) => {
   try {
     const result = await pool.query(
-      // complete TODO
       `SELECT p.*
-      FROM tags t
-      JOIN photos p ON t.photo_id = p.photo_id
-      WHERE t.tag_name LIKE concat('%', $1::text, '%')`,
-      [req.query.input]
+      FROM photos AS p
+      JOIN Tags AS t ON t.photo_id = p.photo_id
+      WHERE t.tag_text LIKE concat('%', $1::text, '%')`,
+      [`%${req.query.input}%`]
     );
+    // console.log(result);
     res.status(200).json(result.rows);
   } catch (err) {
     console.error(err);
