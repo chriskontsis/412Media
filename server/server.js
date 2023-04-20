@@ -474,9 +474,10 @@ app.get("/friendsOfFriends", async (req, res) => {
           INNER JOIN friends ff ON u.user_id = ff.friend_id
           INNER JOIN friends f ON ff.user_id = f.friend_id
       WHERE
-          f.user_id = 1011
+          f.user_id = $1
           AND ff.friend_id NOT IN
-          (SELECT friend_id FROM friends WHERE user_id = 1011)`
+          (SELECT friend_id FROM friends WHERE user_id = $1)`,
+      [userId]
     );
     res.status(200).json(result);
   } catch (err) {
