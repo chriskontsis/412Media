@@ -424,7 +424,6 @@ app.get("/searchTags", async (req, res) => {
       `,
       [`%${req.query.input}%`]
     );
-    // console.log(result);
     res.status(200).json(result.rows);
   } catch (err) {
     console.error(err);
@@ -449,7 +448,6 @@ app.get("/getFriends", async (req, res) => {
         f.user_id = $1`,
       [userId]
     );
-    // console.log(result);
     res.status(200).json(result.rows);
   } catch (err) {
     console.error(err);
@@ -538,7 +536,7 @@ app.get("/popularTags", async (req, res) => {
       `SELECT COUNT(tag_text) as tagcount, tag_text
         FROM tags
         GROUP BY (tag_text)
-        ORDER BY tag_text DESC
+        ORDER BY tagcount DESC
         LIMIT 5`
     );
     res.status(200).json(tags.rows);
