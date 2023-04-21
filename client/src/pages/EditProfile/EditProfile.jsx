@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import "./editProfile.scss";
 import { makeRequest } from "../../axios";
 const EditProfile = () => {
-  const [field, setField] = useState("");
-  const [newVal, setNewVal] = useState("");
+  // const [field, setField] = useState("");
+  // const [newVal, setNewVal] = useState("");
   const { updateCurrentUser } = useContext(AuthContext);
 
   const handleUpdateClick = async (e) => {
@@ -18,7 +18,6 @@ const EditProfile = () => {
     if (queryParam === "first name") newField = "fname";
     else if (queryParam === "last name") newField = "lname";
     else newField = queryParam;
-    setNewVal(inputValue);
 
     try {
       const response = await makeRequest.put(

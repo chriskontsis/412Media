@@ -514,6 +514,7 @@ app.delete("/removeFriend", async (req, res) => {
       .json({ message: "An error occurred while removing the friendship" });
   }
 });
+
 app.post("/addFriend", async (req, res) => {
   try {
     const { user_id, friend_id } = req.query;
@@ -534,6 +535,32 @@ app.post("/addFriend", async (req, res) => {
     res
       .status(500)
       .json({ message: "An error occurred while adding the friendship" });
+  }
+});
+
+app.post("/addFriendByUsername", async (req, res) => {
+  const userId = req.query.userId;
+  const friendUsername = req.query.friendUsername;
+
+  try {
+    const idResult = await pool.query(
+      `SELECT max(id) + 1 AS next_id FROM friends`
+    );
+    const newId = idResult.rows[0].next_id || 1;
+
+    const friend_id = await pool.query(
+      `SELECT user_id FROM users WHERE username = $1`,
+      [friendUsername]
+    );
+    const fid = friend_id.rows[0].user_id;
+    await pool.query(
+      `INSERT INTO friends (id, user_id, friend_id, dayFormed) VALUES ($1, $2, $3, CURRENT_DATE)`,
+      [newId, userId, fid]
+    );
+
+    res.status(200).json("FriendShip created");
+  } catch (err) {
+    console.error(err);
   }
 });
 app.get("/checkFriendship", async (req, res) => {

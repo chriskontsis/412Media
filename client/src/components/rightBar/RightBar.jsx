@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./rightBar.scss";
-import { useQuery } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
+import { AuthContext } from "../../context/authContext";
 
 const RightBar = () => {
+  const { currentUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
   const { isLoading, error, data } = useQuery("/contribution", () =>
     makeRequest.get("/contribution").then((res) => {
       return res.data;
@@ -19,6 +22,13 @@ const RightBar = () => {
       return res.data.rows;
     })
   );
+
+  const handleClick = async (friend) => {
+    await makeRequest.post(
+      `/addFriendByUsername?userId=${currentUser.user_id}&friendUsername=${friend}`
+    );
+    queryClient.invalidateQueries(["/friendsOfFriends"]);
+  };
 
   // console.log(friendsData);
   // leaking passwords lmfao
@@ -38,7 +48,9 @@ const RightBar = () => {
                       <span>{friend.username}</span>
                     </div>
                     <div className="buttons">
-                      <button>Follow</button>
+                      <button onClick={() => handleClick(friend.username)}>
+                        Follow
+                      </button>
                       <button>Dismiss</button>
                     </div>
                   </div>
