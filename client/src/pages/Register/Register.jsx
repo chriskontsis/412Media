@@ -1,4 +1,3 @@
-// import React from "react";
 import React, { useState } from "react";
 import "./register.scss";
 import { Link } from "react-router-dom";

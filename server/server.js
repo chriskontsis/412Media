@@ -5,6 +5,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
+const bcrypt = require('bcrypt');
 
 // Enable CORS middleware
 app.use(
@@ -32,11 +33,9 @@ app.use((req, res, next) => {
   next();
 });
 const contribution = 0;
-// Route for user registration
+
 app.post("/register", async (req, res) => {
   try {
-    // Destructure user data from the request bod
-
     const {
       username,
       password,
@@ -48,12 +47,17 @@ app.post("/register", async (req, res) => {
       dateOfBirth,
     } = req.body;
     const contrib = 0;
-    // Insert new user data into the users table
+
+    // Hash the password using bcrypt
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Insert new user data into the users table, using the hashed password
     const newUser = await pool.query(
       "INSERT INTO users (username, pwd, fname, lname, email, hometown, gender, dob, contribution) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
       [
         username,
-        password,
+        hashedPassword,
         firstName,
         lastName,
         email,
@@ -73,18 +77,23 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const result = await pool.query(
-      "SELECT * FROM users WHERE username = $1 AND pwd = $2",
-      [username, password]
-    );
+    const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+
     if (result.rowCount === 1) {
-      const token = jwt.sign({ id: result.rows[0].user_id }, "password");
-      res
-        .cookie("accessToken", token, {
-          httpOnly: true,
-        })
-        .status(200)
-        .json(result.rows[0]);
+      const user = result.rows[0];
+      const passwordMatch = await bcrypt.compare(password, user.pwd);
+
+      if (passwordMatch) {
+        const token = jwt.sign({ id: user.user_id }, "password");
+        res
+          .cookie("accessToken", token, {
+            httpOnly: true,
+          })
+          .status(200)
+          .json(user);
+      } else {
+        res.status(404).json("Input Info is incorrect");
+      }
     } else {
       res.status(404).json("Input Info is incorrect");
     }
@@ -225,29 +234,6 @@ app.delete("/likes", async (req, res) => {
     res.status(200).json("Post unliked");
   } catch (err) {
     console.error(err);
-  }
-});
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const result = await pool.query(
-      "SELECT * FROM users WHERE username = $1 AND pwd = $2",
-      [username, password]
-    );
-    if (result.rowCount === 1) {
-      const token = jwt.sign({ id: result.rows[0].user_id }, "password");
-      res
-        .cookie("accessToken", token, {
-          httpOnly: true,
-        })
-        .status(200)
-        .json(result.rows[0]);
-    } else {
-      res.status(404).json("Input Info is incorrect");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(err);
   }
 });
 
