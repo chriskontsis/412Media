@@ -1,46 +1,103 @@
-.navbar {
+@keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes ripple {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+    }
+  }
+  
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0);
+    animation: ripple 1s linear;
+    pointer-events: none;
+  }
+  
+  .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
     height: 50px;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid rgb(191, 188, 188);
     position: sticky;
     top: 0;
-    background-color: white;
+    background: conic-gradient(at 56% 10%, red 30%, yellow 0%, #1e90ff 30%);
+    background-size: 300% 300%;
+    animation: gradient 15s ease infinite;
     z-index: 999;
+  
+    &:hover {
+      animation-play-state: play;
+    }
+  
     .left {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+  
+      span {
+        font-weight: bold;
+        font-size: 20px;
+        color: rgb(255, 255, 255);
+        text-shadow: 2px 2px #aba2a2;
+      }
+  
+      .search {
         display: flex;
         align-items: center;
-        gap: 30px;
-        span{
-            font-weight: bold;
-            font-size: 20px;
-            color: purple;
-        }
-        .search{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid lightgrey;
-            border-radius: 5px;
-            padding: 5px;
-            input{
-                border: none;
-                width: 500px;
-            }
-        }
+        gap: 10px;
+        border: 0.1px solid lightgrey;
+        border-radius: 5px;
+        padding: 5px;
+  
+        input {
+            border: none;
+            background: transparent;
+            width: 500px;
+            color: #ffffff;
+          }
+          svg {
+            fill: #ffffff;
+          }
+      }
     }
-    .right{
+  
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: rgba(255, 255, 255, 0.936);
+  
+      .user {
         display: flex;
         align-items: center;
-        gap: 20px;
-        .user{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-        }
+        gap: 10px;
+        color: #f42121;
+        font-weight: 500;
+      }
+      svg {
+        fill: #000000;
+      }
     }
-
-}
+  }
+  
