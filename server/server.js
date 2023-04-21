@@ -741,6 +741,9 @@ app.put("/updateUserInfo", async (req, res) => {
   const field = req.query.field;
   const newVal = req.query.newVal;
 
+  console.log(field);
+  console.log(newVal);
+
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not logged in");
   let userId = -1;

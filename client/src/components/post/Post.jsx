@@ -60,6 +60,7 @@ const Post = ({ post }) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("/posts");
+        queryClient.invalidateQueries("/profilePosts");
       },
       onError: (error) => {
         console.log("Delete post error:", error);

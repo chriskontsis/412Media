@@ -4,6 +4,7 @@ import "./editProfile.scss";
 import { makeRequest } from "../../axios";
 const EditProfile = () => {
   const [field, setField] = useState("");
+  const [newVal, setNewVal] = useState("");
   const { updateCurrentUser } = useContext(AuthContext);
 
   const handleUpdateClick = async (e) => {
@@ -17,11 +18,11 @@ const EditProfile = () => {
     if (queryParam === "first name") newField = "fname";
     else if (queryParam === "last name") newField = "lname";
     else newField = queryParam;
-    setField(newField);
+    setNewVal(inputValue);
 
     try {
       const response = await makeRequest.put(
-        `/updateUserInfo?field=${field}&newVal=${inputValue}`
+        `/updateUserInfo?field=${newField}&newVal=${inputValue}`
       );
       updateCurrentUser(response.data[0]);
     } catch (err) {
