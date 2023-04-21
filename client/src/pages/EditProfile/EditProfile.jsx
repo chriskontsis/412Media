@@ -8,14 +8,16 @@ const EditProfile = () => {
 
   const handleUpdateClick = async (e) => {
     e.preventDefault();
+    let newField;
     const queryParam =
       e.target.parentElement.previousElementSibling.textContent.trim();
     const inputValue = e.target.parentElement
       .querySelector("input")
       .value.trim();
-    if (queryParam === "first name") setField("fname");
-    else if (queryParam === "last name") setField("lname");
-    else setField(queryParam);
+    if (queryParam === "first name") newField = "fname";
+    else if (queryParam === "last name") newField = "lname";
+    else newField = queryParam;
+    setField(newField);
 
     try {
       const response = await makeRequest.put(

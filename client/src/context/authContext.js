@@ -11,6 +11,11 @@ export const AuthContextProvider = ({ children }) => {
     console.log("auth context");
     const res = await axios.post("http://localhost:3005/login", inputs, {
       withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        SameSite: "none",
+        Secure: true,
+      },
     });
     setCurrentUser(res.data);
   };
