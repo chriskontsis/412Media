@@ -4,6 +4,7 @@ import { makeRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
 import Post from "../post/Post";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 const Albums = () => {
   const userId = parseInt(useLocation().pathname.split("/")[2]);
   const [showAlbums, setShowAlbums] = useState(false);
@@ -36,9 +37,19 @@ const Albums = () => {
       <div className="ddContainer">
         <div className="container">
           <div class="dropdown">
-            <button class="dropbtn" onClick={() => setShowAlbums(!showAlbums)}>
+            <button class="dropbtn" onClick={() => setShowAlbums(!showAlbums)} style={{border: "1px solid black", marginRight: "5px"}}>
               Select Album
             </button>
+            <Link to="/create-album">
+              <button class="dropbtn" style={{border: "1px solid black", marginRight: "5px"}}>
+                Create Album
+              </button>
+            </Link>
+            <Link to="/delete-album">
+              <button class="dropbtn" style={{border: "1px solid black"}}>
+                Delete Album
+              </button>
+            </Link>
             <div
               class="dropdown-content"
               style={{ display: showAlbums ? "block" : "none" }}

@@ -483,15 +483,27 @@ app.get("/friendsOfFriends", async (req, res) => {
   }
 });
 
+app.delete("/posts/:postId", async (req, res) => {
+  try {
+    const { postId } = req.params;
+    // TODO DROP COMMENTS,LIKES, AND ALBUM_ID FROM THIS SPECIFIC PHOTO_ID
+    await pool.query("DELETE FROM Photos WHERE Photo_id = $1", [postId]);
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.delete("/removeFriend", async (req, res) => {
   try {
-    const currentUser_ID = userInfo.id;
-    const { friend_id } = req.query; // Use req.query instead of req.body
+    const { user_id, friend_id } = req.query;
 
     await pool.query(
       `DELETE FROM friends
        WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1)`,
-      [currentUser_ID, friend_id]
+      [user_id, friend_id]
     );
     res.status(200).json({ message: "Friendship removed successfully" });
   } catch (err) {
@@ -501,6 +513,65 @@ app.delete("/removeFriend", async (req, res) => {
       .json({ message: "An error occurred while removing the friendship" });
   }
 });
+app.post("/addFriend", async (req, res) => {
+  try {
+    const { user_id, friend_id } = req.query;
+
+    // Generate a unique id for the new friendship record
+    const idResult = await pool.query(`SELECT max(id) + 1 AS next_id FROM friends`);
+    const newId = idResult.rows[0].next_id || 1;
+
+    await pool.query(
+      `INSERT INTO friends (id, user_id, friend_id, dayFormed) VALUES ($1, $2, $3, CURRENT_DATE)`,
+      [newId, user_id, friend_id]
+    );
+    res.status(200).json({ message: "Friendship added successfully" });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "An error occurred while adding the friendship" });
+  }
+});
+app.get("/checkFriendship", async (req, res) => {
+  try {
+    const { user_id, friend_id } = req.query;
+    const result = await pool.query(
+      `SELECT * FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1)`,
+      [user_id, friend_id]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).json({ status: "friends" });
+    } else {
+      res.status(200).json({ status: "not_friends" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred while checking friendship status" });
+  }
+});
+app.post("/createAlbum", async (req, res) => {
+  try {
+    const { user_id, name, date } = req.body;
+
+    const idResult = await pool.query(`SELECT max(album_id) + 1 AS next_id FROM albums`);
+    const newId = idResult.rows[0].next_id || 1;
+
+    await pool.query(
+      `INSERT INTO albums (album_id, user_id, name, date) VALUES ($1, $2, $3, $4)`,
+      [newId, user_id, name, date]
+    );
+    res.status(200).json({ message: "Album created successfully" });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "An error occurred while creating the album" });
+  }
+});
+
+
 
 app.get("/contribution", async (req, res) => {
   try {
@@ -603,6 +674,17 @@ app.get("/findAlbumPosts", async (req, res) => {
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
+  }
+});
+
+app.post("/deleteAlbum", async (req, res) => {
+  try {
+    const { album_id } = req.body;
+    await pool.query("DELETE FROM albums WHERE album_id = $1", [album_id]);
+    res.status(200).json({ message: "Album deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error deleting album" });
   }
 });
 
