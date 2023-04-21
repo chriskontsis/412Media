@@ -542,6 +542,25 @@ app.get("/checkFriendship", async (req, res) => {
       .json({ message: "An error occurred while checking friendship status" });
   }
 });
+app.post("/createAlbum", async (req, res) => {
+  try {
+    const { user_id, name, date } = req.body;
+
+    const idResult = await pool.query(`SELECT max(album_id) + 1 AS next_id FROM albums`);
+    const newId = idResult.rows[0].next_id || 1;
+
+    await pool.query(
+      `INSERT INTO albums (album_id, user_id, name, date) VALUES ($1, $2, $3, $4)`,
+      [newId, user_id, name, date]
+    );
+    res.status(200).json({ message: "Album created successfully" });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "An error occurred while creating the album" });
+  }
+});
 
 app.get("/contribution", async (req, res) => {
   try {
