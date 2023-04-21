@@ -55,8 +55,6 @@ const Profile = () => {
     }
   };
 
-  const editProfile = async () => {};
-
   const removeFriend = async () => {
     try {
       await makeRequest.delete(
@@ -85,10 +83,7 @@ const Profile = () => {
             >
               {currentUser.user_id === userId ? (
                 <Link to={"/updateProfile"}>
-                  <button
-                    onClick={editProfile}
-                    style={{ backgroundColor: "blue" }}
-                  >
+                  <button style={{ backgroundColor: "blue" }}>
                     Edit Profile
                   </button>
                 </Link>

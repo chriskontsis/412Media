@@ -486,6 +486,7 @@ app.get("/friendsOfFriends", async (req, res) => {
 app.delete("/posts/:postId", async (req, res) => {
   try {
     const { postId } = req.params;
+    console.log(postId);
     // TODO DROP COMMENTS,LIKES, AND ALBUM_ID FROM THIS SPECIFIC PHOTO_ID
     await pool.query("DELETE FROM Photos WHERE Photo_id = $1", [postId]);
 

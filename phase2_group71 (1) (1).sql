@@ -1,3 +1,9 @@
+ALTER TABLE tags
+ADD CONSTRAINT fk_tags_photo_id FOREIGN KEY (photo_id) REFERENCES Photos(photo_id) ON DELETE CASCADE;
+ALTER TABLE likes
+ADD CONSTRAINT fk_likes_photo_id FOREIGN KEY (photo_id) REFERENCES Photos(photo_id) ON DELETE CASCADE;
+ALTER TABLE comments
+ADD CONSTRAINT fk_comments_photo_id FOREIGN KEY (photo_id) REFERENCES Photos(photo_id) ON DELETE CASCADE;
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(20),

@@ -22,19 +22,17 @@ const Post = ({ post }) => {
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
-  const { isLoading, error, data } = useQuery(["/likes", post.photo_id], () =>
+  const { isLoading, data } = useQuery(["/likes", post.photo_id], () =>
     makeRequest.get("/likes?postId=" + post.photo_id).then((res) => {
       return res.data;
     })
   );
-  const {
-    isLoading: tagsLoading,
-    error: tagsError,
-    data: tagsData,
-  } = useQuery(["/tags", post.photo_id], () =>
-    makeRequest.get("/tags?postId=" + post.photo_id).then((res) => {
-      return res.data;
-    })
+  const { isLoading: tagsLoading, data: tagsData } = useQuery(
+    ["/tags", post.photo_id],
+    () =>
+      makeRequest.get("/tags?postId=" + post.photo_id).then((res) => {
+        return res.data;
+      })
   );
   const mutation = useMutation(
     (liked) => {
@@ -153,13 +151,10 @@ const Post = ({ post }) => {
                 ))}
           </div>
         </div>
-        {commentOpen && (
-          <Comments postId={post.photo_id} key={post.photo_id} />
-        )}
+        {commentOpen && <Comments postId={post.photo_id} key={post.photo_id} />}
       </div>
     </div>
   );
 };
 
 export default Post;
-
