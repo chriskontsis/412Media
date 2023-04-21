@@ -546,7 +546,9 @@ app.post("/createAlbum", async (req, res) => {
   try {
     const { user_id, name, date } = req.body;
 
-    const idResult = await pool.query(`SELECT max(album_id) + 1 AS next_id FROM albums`);
+    const idResult = await pool.query(
+      `SELECT max(album_id) + 1 AS next_id FROM albums`
+    );
     const newId = idResult.rows[0].next_id || 1;
 
     await pool.query(
@@ -705,6 +707,31 @@ app.post("/addPhoto", async (req, res) => {
       [userId]
     );
     return res.status(200).json("added post");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.put("/updateUserInfo", async (req, res) => {
+  const field = req.query.field;
+  const newVal = req.query.newVal;
+
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Not logged in");
+  let userId = -1;
+  jwt.verify(token, "password", (err, userInfo) => {
+    if (err) return res.status(403).json("Invalid Token");
+    userId = userInfo.id;
+  });
+
+  try {
+    const query = await pool.query(
+      `UPDATE users 
+      SET ${field} = $1
+      WHERE user_id = $2 RETURNING *`,
+      [newVal, userId]
+    );
+    res.status(200).json(query.rows);
   } catch (err) {
     console.error(err);
   }

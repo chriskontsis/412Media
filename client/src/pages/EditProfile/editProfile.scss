@@ -1,0 +1,39 @@
+.editProfile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      
+      .item {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+  
+        h3 {
+          margin-right: 10px;
+        }
+  
+        .input-container {
+          display: flex;
+          align-items: center;
+  
+          input {
+            margin-right: 10px;
+            height: 20px;
+          }
+
+          button {
+            border: none;
+            padding: 5px;
+            background-color: cadetblue;
+            color: white;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }

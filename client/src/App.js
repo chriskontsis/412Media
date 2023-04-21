@@ -6,10 +6,10 @@ import Profile from "./pages/Profile/Profile";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import NavBar from "./components/navbar/NavBar";
-import TagSearchResults from './pages/TagSearchResults/TagSearchResults';
-import FriendsList from './components/FriendsList/FriendsList';
+import TagSearchResults from "./pages/TagSearchResults/TagSearchResults";
+import FriendsList from "./components/FriendsList/FriendsList";
 import CreateAlbum from "./components/CreateAlbum/CreateAlbum";
-import DeleteAlbum from "./components/DeleteAlbum/DeleteAlbum";  
+import DeleteAlbum from "./components/DeleteAlbum/DeleteAlbum";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -19,6 +19,7 @@ import {
 } from "react-router-dom";
 import { AuthContext } from "./context/authContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+import EditProfile from "./pages/EditProfile/EditProfile";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -65,12 +66,12 @@ function App() {
           element: <Profile />,
         },
         {
-          path: '/search/:searchTerm',
+          path: "/search/:searchTerm",
           element: <TagSearchResults />,
         },
         {
-          path: '/friends/:id',
-          element: <FriendsList/>,
+          path: "/friends/:id",
+          element: <FriendsList />,
         },
         {
           path: "/create-album",
@@ -79,6 +80,10 @@ function App() {
         {
           path: "/delete-album",
           element: <DeleteAlbum />,
+        },
+        {
+          path: "/updateProfile",
+          element: <EditProfile />,
         },
       ],
     },

@@ -6,7 +6,7 @@ import Share from "../../components/share/Share";
 import { useQuery } from "react-query";
 import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Post from "../../components/post/Post";
 import profilePic from "../../assets/profilePic.png";
 const Profile = () => {
@@ -37,15 +37,20 @@ const Profile = () => {
     data: friendshipData,
     refetch: refetchFriendship,
   } = useQuery(["/checkFriendship"], () =>
-    makeRequest.get(`/checkFriendship?user_id=${currentUser.user_id}&friend_id=${userId}`).then((res) => {
-      return res.data;
-    })
+    makeRequest
+      .get(
+        `/checkFriendship?user_id=${currentUser.user_id}&friend_id=${userId}`
+      )
+      .then((res) => {
+        return res.data;
+      })
   );
 
-  
   const addFriend = async () => {
     try {
-      await makeRequest.post(`/addFriend?user_id=${currentUser.user_id}&friend_id=${userId}`);
+      await makeRequest.post(
+        `/addFriend?user_id=${currentUser.user_id}&friend_id=${userId}`
+      );
       // You can add additional actions here, e.g., show a success message or update the UI
       await refetchFriendship();
     } catch (error) {
@@ -53,9 +58,13 @@ const Profile = () => {
     }
   };
 
+  const editProfile = async () => {};
+
   const removeFriend = async () => {
     try {
-      await makeRequest.delete(`/removeFriend?user_id=${currentUser.user_id}&friend_id=${userId}`);
+      await makeRequest.delete(
+        `/removeFriend?user_id=${currentUser.user_id}&friend_id=${userId}`
+      );
       await refetchFriendship();
     } catch (error) {
       console.error("Error removing friend:", error);
@@ -72,9 +81,21 @@ const Profile = () => {
         <div className="userInfo">
           <div className="left"></div>
           <div className="center">
-          <span>{userLoading ? "loading..." : userData[0].username}</span>
-            <div className="buttonContainer" style={{ display: "flex", justifyContent: "center" }}>
-              {isFriend ? (
+            <span>{userLoading ? "loading..." : userData[0].username}</span>
+            <div
+              className="buttonContainer"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              {currentUser.user_id === userId ? (
+                <Link to={"/updateProfile"}>
+                  <button
+                    onClick={editProfile}
+                    style={{ backgroundColor: "blue" }}
+                  >
+                    Edit Profile
+                  </button>
+                </Link>
+              ) : isFriend ? (
                 <button
                   onClick={removeFriend}
                   style={{ backgroundColor: "red" }}
@@ -82,7 +103,12 @@ const Profile = () => {
                   Remove Friend
                 </button>
               ) : (
-                <button onClick={addFriend} style={{ backgroundColor: "green" }}>Add Friend</button>
+                <button
+                  onClick={addFriend}
+                  style={{ backgroundColor: "green" }}
+                >
+                  Add Friend
+                </button>
               )}
             </div>
             <div className="display">
