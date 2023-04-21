@@ -483,6 +483,19 @@ app.get("/friendsOfFriends", async (req, res) => {
   }
 });
 
+app.delete("/posts/:postId", async (req, res) => {
+  try {
+    const { postId } = req.params;
+    // TODO DROP COMMENTS,LIKES, AND ALBUM_ID FROM THIS SPECIFIC PHOTO_ID
+    await pool.query("DELETE FROM Photos WHERE Photo_id = $1", [postId]);
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.delete("/removeFriend", async (req, res) => {
   try {
     const { user_id, friend_id } = req.query;
