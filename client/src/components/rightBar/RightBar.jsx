@@ -51,7 +51,6 @@ const RightBar = () => {
                       <button onClick={() => handleClick(friend.username)}>
                         Follow
                       </button>
-                      <button>Dismiss</button>
                     </div>
                   </div>
                 ))}
