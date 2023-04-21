@@ -44,15 +44,15 @@ const RightBar = () => {
                 ))}
           </div>
         </div>
-        <div className="item">
+        <div className="contibItem">
           <span>Highest Contributors</span>
           {error
             ? "An error occurred"
             : isLoading
             ? "loading..."
             : data.map((data) => (
-                <div className="user" key={data.username}>
-                  <div className="userInfo">
+                <div className="contrib" key={data.username}>
+                  <div className="conrtibInfo">
                     <span>{data.username}</span>
                   </div>
                   <span>{data.contribution + "pts"}</span>

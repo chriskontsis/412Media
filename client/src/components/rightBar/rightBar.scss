@@ -11,24 +11,49 @@
 
     .container {
         padding: 20px;
+
+
+        .contibItem {
+            -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+            -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+            box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+            padding: 20px;
+            margin-bottom: 20px;
+
+            .contrib {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 20px 0px;
+                span {
+                    color: grey
+                }
+            }
+        }
+
+
+
         .item {
             -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
             -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
             box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
             padding: 20px;
             margin-bottom: 20px;
+        
             span {
                 color: grey;
             }
             .user {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin: 20px 0px;
+                // display: flex;
+                // align-items: center;
+                // justify-content: space-between;
+                // margin: 20px 0px;
                 .friendContainer {
                     display: flex;
                     align-items: center;
-                    gap: 30px;
+                    justify-content: space-between;
+                    margin: 20px 0px;
+                    
                     .userInfo {
                         span {
                             font-weight: 500;
