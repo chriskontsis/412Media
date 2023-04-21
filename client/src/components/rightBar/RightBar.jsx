@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./rightBar.scss";
-import { QueryClient, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
 
@@ -29,9 +29,6 @@ const RightBar = () => {
     );
     queryClient.invalidateQueries(["/friendsOfFriends"]);
   };
-
-  // console.log(friendsData);
-  // leaking passwords lmfao
 
   return (
     <div className="rightBar">
