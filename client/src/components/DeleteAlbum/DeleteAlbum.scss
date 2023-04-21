@@ -1,0 +1,42 @@
+.delete-album {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    .album-list {
+      list-style-type: none;
+      padding: 0;
+    }
+  
+    .album-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 10px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+    }
+  
+    .delete-button {
+      background-color: red;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+    .delete-button:hover {
+      background-color: darkred;
+    }
+  }
+  
