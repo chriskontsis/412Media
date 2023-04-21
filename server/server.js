@@ -664,6 +664,17 @@ app.get("/findAlbumPosts", async (req, res) => {
   }
 });
 
+app.post("/deleteAlbum", async (req, res) => {
+  try {
+    const { album_id } = req.body;
+    await pool.query("DELETE FROM albums WHERE album_id = $1", [album_id]);
+    res.status(200).json({ message: "Album deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error deleting album" });
+  }
+});
+
 app.post("/addPhoto", async (req, res) => {
   const imageUrl = req.body.imageUrl;
   const albumName = req.body.albumName;
