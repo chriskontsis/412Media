@@ -20,7 +20,8 @@ const RightBar = () => {
     })
   );
 
-  console.log(friendsData);
+  // console.log(friendsData);
+  // leaking passwords lmfao
 
   return (
     <div className="rightBar">
