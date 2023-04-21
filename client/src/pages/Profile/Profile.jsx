@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "./profile.scss";
 import Albums from "../../components/albums/Albums";
 import Share from "../../components/share/Share";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
 import { Link, useLocation } from "react-router-dom";
@@ -12,6 +12,7 @@ const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
   const [showPhotos, setShowPhotos] = useState(true);
+  const queryClient = useQueryClient();
 
   const { isLoading: userLoading, data: userData } = useQuery(
     ["/findUsername"],
@@ -50,6 +51,7 @@ const Profile = () => {
       );
       // You can add additional actions here, e.g., show a success message or update the UI
       await refetchFriendship();
+      queryClient.invalidateQueries(["/friendsOfFriends"]);
     } catch (error) {
       console.error("Error adding friend:", error);
     }
@@ -61,6 +63,7 @@ const Profile = () => {
         `/removeFriend?user_id=${currentUser.user_id}&friend_id=${userId}`
       );
       await refetchFriendship();
+      queryClient.invalidateQueries(["/friendsOfFriends"]);
     } catch (error) {
       console.error("Error removing friend:", error);
     }

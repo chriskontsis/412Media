@@ -5,7 +5,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 // Enable CORS middleware
 app.use(
@@ -77,7 +77,9 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+    const result = await pool.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
 
     if (result.rowCount === 1) {
       const user = result.rows[0];
@@ -103,6 +105,16 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/logout", async (req, res) => {
+  res
+    .clearCookie("accessToken", {
+      secure: true,
+      sameSite: "none",
+    })
+    .status(200)
+    .json("user logged out");
+});
+
 app.get("/", async (req, res) => {
   const token = req.cookies.accessToken;
   let id = -1;
@@ -116,10 +128,7 @@ app.get("/", async (req, res) => {
       `SELECT p.*,  u.user_id AS userId, fname, username
       FROM Photos as p 
       JOIN users AS u ON (p.user_id = u.user_id)  
-      LEFT JOIN friends AS f ON (p.user_id = f.friend_id)
-      WHERE f.user_id = $1 OR p.user_id = $2
-      ORDER BY p.postdate DESC`,
-      [id, id]
+      ORDER BY p.postdate DESC`
     );
     res.status(200).json(result);
   } catch (err) {
@@ -234,31 +243,6 @@ app.delete("/likes", async (req, res) => {
     res.status(200).json("Post unliked");
   } catch (err) {
     console.error(err);
-  }
-});
-
-app.get("/", async (req, res) => {
-  const token = req.cookies.accessToken;
-  let id = -1;
-  if (!token) res.status(401).json("Not logged in");
-  jwt.verify(token, "password", (err, userInfo) => {
-    if (err) return res.status(403).json("Token invalid");
-    id = userInfo.id;
-  });
-  try {
-    const result = await pool.query(
-      `SELECT p.*,  u.user_id AS userId, fname, username
-      FROM Photos as p 
-      JOIN users AS u ON (p.user_id = u.user_id)  
-      LEFT JOIN friends AS f ON (p.user_id = f.friend_id)
-      WHERE f.user_id = $1 OR p.user_id = $2
-      ORDER BY p.postdate DESC`,
-      [id, id]
-    );
-    res.status(200).json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500);
   }
 });
 

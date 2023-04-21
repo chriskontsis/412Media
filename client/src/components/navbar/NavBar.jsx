@@ -25,6 +25,10 @@ const NavBar = () => {
     }
   };
 
+  const handleLogout = async () => {
+    makeRequest.post("/logout");
+  };
+
   return (
     <div className="navbar">
       <div className="left">
@@ -46,6 +50,9 @@ const NavBar = () => {
       </div>
       <div className="right">
         <PersonOutlineOutlinedIcon />
+        <Link to="/login">
+          <LogoutIcon style={{ cursor: "pointer" }} onClick={handleLogout} />
+        </Link>
         <div className="user">
           {currentUser ? (
             <Link

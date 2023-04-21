@@ -89,17 +89,22 @@
       display: flex;
       align-items: center;
       gap: 20px;
-      background-color: rgba(255, 255, 255, 0.936);
-  
+      //background-color: rgba(255, 255, 255, 0.936);
+      
       .user {
         display: flex;
         align-items: center;
         gap: 10px;
         color: #f42121;
         font-weight: 500;
+
+        span {
+          color: white;
+        }
       }
       svg {
-        fill: #000000;
+        fill: white;
+
       }
     }
   }
