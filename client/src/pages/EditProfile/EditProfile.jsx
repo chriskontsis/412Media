@@ -4,7 +4,7 @@ import "./editProfile.scss";
 import { makeRequest } from "../../axios";
 const EditProfile = () => {
   const [field, setField] = useState("");
-  const { currentUser, updateCurrentUser } = useContext(AuthContext);
+  const { updateCurrentUser } = useContext(AuthContext);
 
   const handleUpdateClick = async (e) => {
     e.preventDefault();

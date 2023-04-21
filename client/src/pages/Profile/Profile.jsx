@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import "./profile.scss";
 import Albums from "../../components/albums/Albums";
-import ProfileSearch from "../../components/profileSearch/ProfileSearch";
 import Share from "../../components/share/Share";
 import { useQuery } from "react-query";
 import { makeRequest } from "../../axios";
@@ -32,18 +31,16 @@ const Profile = () => {
     setShowPhotos((prevShowPhotos) => !prevShowPhotos);
   };
 
-  const {
-    isLoading: friendshipLoading,
-    data: friendshipData,
-    refetch: refetchFriendship,
-  } = useQuery(["/checkFriendship"], () =>
-    makeRequest
-      .get(
-        `/checkFriendship?user_id=${currentUser.user_id}&friend_id=${userId}`
-      )
-      .then((res) => {
-        return res.data;
-      })
+  const { data: friendshipData, refetch: refetchFriendship } = useQuery(
+    ["/checkFriendship"],
+    () =>
+      makeRequest
+        .get(
+          `/checkFriendship?user_id=${currentUser.user_id}&friend_id=${userId}`
+        )
+        .then((res) => {
+          return res.data;
+        })
   );
 
   const addFriend = async () => {
