@@ -319,8 +319,8 @@ app.post("/comments", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO comments (user_id, photo_id, commenttext, createdat) VALUES ($1, $2, $3, $4) RETURNING *",
-      [userId, req.body.postId, req.body.desc, "2023-4-13"]
+      "INSERT INTO comments (user_id, photo_id, commenttext, createdat) VALUES ($1, $2, $3, CURRENT_DATE) RETURNING *",
+      [userId, req.body.postId, req.body.desc]
     );
 
     await pool.query(
@@ -505,7 +505,9 @@ app.post("/addFriend", async (req, res) => {
     const { user_id, friend_id } = req.query;
 
     // Generate a unique id for the new friendship record
-    const idResult = await pool.query(`SELECT max(id) + 1 AS next_id FROM friends`);
+    const idResult = await pool.query(
+      `SELECT max(id) + 1 AS next_id FROM friends`
+    );
     const newId = idResult.rows[0].next_id || 1;
 
     await pool.query(
@@ -535,11 +537,11 @@ app.get("/checkFriendship", async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "An error occurred while checking friendship status" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while checking friendship status" });
   }
 });
-
-
 
 app.get("/contribution", async (req, res) => {
   try {
@@ -670,8 +672,8 @@ app.post("/addPhoto", async (req, res) => {
     const aid = albumId.rows[0].album_id;
     const pid = await pool.query(
       `INSERT INTO photos (user_id, caption, postdate, album_id, imageurl)
-      VALUES ($1, $2, $3, $4, $5) RETURNING photo_id`,
-      [userId, desc, "2023-4-18", aid, imageUrl]
+      VALUES ($1, $2, CURRENT_DATE, $3, $4) RETURNING photo_id`,
+      [userId, desc, aid, imageUrl]
     );
     for (const tag of tags) {
       const inserttag = await pool.query(
