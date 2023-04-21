@@ -46,7 +46,6 @@ const NavBar = () => {
       </div>
       <div className="right">
         <PersonOutlineOutlinedIcon />
-        <LogoutIcon />
         <div className="user">
           {currentUser ? (
             <Link
