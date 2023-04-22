@@ -15,12 +15,13 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
 import profilePic from "../../assets/profilePic.png";
-
+import Likes from "../likes/Likes";
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
+  const [likesOpen, setLikesOpen] = useState(false);
 
   const { isLoading, data } = useQuery(["/likes", post.photo_id], () =>
     makeRequest.get("/likes?postId=" + post.photo_id).then((res) => {
@@ -132,7 +133,11 @@ const Post = ({ post }) => {
             ) : (
               <FavoriteBorderOutlinedIcon onClick={handleLike} />
             )}
-            {isLoading ? "likes loading" : data.length} Likes
+            <Link to={`/usersLiked/${post.photo_id}`}>
+              <span style={{ cursor: "pointer" }}>
+                {isLoading ? "likes loading" : data.length} Likes
+              </span>
+            </Link>
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />

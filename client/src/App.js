@@ -20,6 +20,7 @@ import {
 import { AuthContext } from "./context/authContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import EditProfile from "./pages/EditProfile/EditProfile";
+import Likes from "./components/likes/Likes";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -84,6 +85,10 @@ function App() {
         {
           path: "/updateProfile",
           element: <EditProfile />,
+        },
+        {
+          path: "/usersLiked/:photo_id",
+          element: <Likes />,
         },
       ],
     },

@@ -246,6 +246,24 @@ app.delete("/likes", async (req, res) => {
   }
 });
 
+app.get("/postLikes", async (req, res) => {
+  const photoId = req.query.photoId;
+  try {
+    const result = await pool.query(
+      `SELECT username 
+        FROM users AS u
+        JOIN likes AS l ON (l.user_id = u.user_id)
+        WHERE l.photo_id = $1
+      `,
+      [photoId]
+    );
+    console.log(result);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.get("/tags", async (req, res) => {
   try {
     const result = await pool.query(
