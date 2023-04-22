@@ -133,8 +133,11 @@ const Post = ({ post }) => {
             ) : (
               <FavoriteBorderOutlinedIcon onClick={handleLike} />
             )}
-            <Link to={`/usersLiked/${post.photo_id}`}>
-              <span style={{ cursor: "pointer" }}>
+            <Link
+              to={`/usersLiked/${post.photo_id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <span style={{ cursor: "pointer", textDecoration: "none" }}>
                 {isLoading ? "likes loading" : data.length} Likes
               </span>
             </Link>

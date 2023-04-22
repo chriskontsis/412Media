@@ -4,12 +4,12 @@ import { AuthContext } from "../../context/authContext";
 import profilePic from "../../assets/profilePic.png";
 import { makeRequest } from "../../axios";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [inputValue, setInputValue] = useState("");
   const [userComments, setUserComments] = useState([]);
-
+  const navigate = useNavigate();
   const {
     isLoading: tagsLoading,
     error: tagsError,
@@ -19,6 +19,10 @@ const LeftBar = () => {
       return res.data;
     })
   );
+
+  const handleTagClick = async (tag_text) => {
+    navigate(`/search/${tag_text}`);
+  };
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -41,9 +45,15 @@ const LeftBar = () => {
           <div className="user">
             <img src={profilePic} alt=""></img>
             {currentUser ? (
-                <Link to={`/profile/${currentUser.user_id}`} style={{ textDecoration: "none" }}>
-                  <span>{currentUser.fname + " " + currentUser.lname}</span>
-                </Link>) : (<span>Guest</span>)}
+              <Link
+                to={`/profile/${currentUser.user_id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <span>{currentUser.fname + " " + currentUser.lname}</span>
+              </Link>
+            ) : (
+              <span>Guest</span>
+            )}
           </div>
           <div className="item">
             <img
@@ -51,7 +61,10 @@ const LeftBar = () => {
               alt=""
             />
             {currentUser ? (
-              <Link to={`/friends/${currentUser.user_id}`} style={{ textDecoration: "none" }}>
+              <Link
+                to={`/friends/${currentUser.user_id}`}
+                style={{ textDecoration: "none" }}
+              >
                 <span>Friends</span>
               </Link>
             ) : (
@@ -64,9 +77,15 @@ const LeftBar = () => {
               alt=""
             />
             {currentUser ? (
-                <Link to={`/profile/${currentUser.user_id}`} style={{ textDecoration: "none" }}>
-                  <span>Albums</span>
-                </Link>) : (<span>Guest</span>)}
+              <Link
+                to={`/profile/${currentUser.user_id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <span>Albums</span>
+              </Link>
+            ) : (
+              <span>Guest</span>
+            )}
           </div>
         </div>
         <hr />
@@ -76,7 +95,12 @@ const LeftBar = () => {
             ? "loading.."
             : tagsData.map((tag) => (
                 <div className="info" key={tag.tag_text}>
-                  <span>{tag.tag_text}</span>
+                  <span
+                    onClick={() => handleTagClick(tag.tag_text)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {tag.tag_text}
+                  </span>
                   <span>{tag.tagcount}</span>
                 </div>
               ))}
