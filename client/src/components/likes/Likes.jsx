@@ -19,7 +19,7 @@ const Likes = () => {
         {isLoading
           ? "loading.."
           : data.map((user) => (
-              <div className="comment" key={user.username}>
+              <div className="username" key={user.username}>
                 <span>{user.username}</span>
               </div>
             ))}

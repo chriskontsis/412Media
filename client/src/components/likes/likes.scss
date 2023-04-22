@@ -1,0 +1,12 @@
+.likes {
+    .users {
+        margin: 20px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        .username {
+            padding: 10px;
+        }
+    }
+}
