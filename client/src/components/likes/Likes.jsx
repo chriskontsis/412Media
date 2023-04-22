@@ -11,8 +11,6 @@ const Likes = () => {
     })
   );
 
-  console.log(data);
-
   return (
     <div className="likes">
       <div className="users">

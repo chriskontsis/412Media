@@ -257,7 +257,6 @@ app.get("/postLikes", async (req, res) => {
       `,
       [photoId]
     );
-    console.log(result);
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
