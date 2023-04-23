@@ -12,7 +12,24 @@ const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const userId = parseInt(useLocation().pathname.split("/")[2]);
   const [showPhotos, setShowPhotos] = useState(true);
+  const [showTagged, showTaggedPosts] = useState(false);
+  const [taggedPosts, setTaggedPosts] = useState([]);
+  const [tags, setTags] = useState("");
   const queryClient = useQueryClient();
+
+  const handleTagChange = (event) => {
+    setTags(event.target.value);
+  };
+
+  const getTaggedPosts = async () => {
+    const result = await makeRequest.get(
+      `/getTaggedPosts?userId=${userId}&tags=${tags}`
+    );
+    showTaggedPosts(true);
+    setShowPhotos(false);
+    setTags("");
+    setTaggedPosts(result.data.rows);
+  };
 
   const { isLoading: userLoading, data: userData } = useQuery(
     ["/findUsername"],
@@ -55,6 +72,11 @@ const Profile = () => {
     } catch (error) {
       console.error("Error adding friend:", error);
     }
+  };
+
+  const handleAlbumClick = () => {
+    showTaggedPosts(false);
+    setShowPhotos(false);
   };
 
   const removeFriend = async () => {
@@ -110,16 +132,18 @@ const Profile = () => {
               <h3
                 onClick={handleH3Click}
                 style={{
-                  textDecoration: showPhotos ? "underline" : "none",
+                  textDecoration:
+                    showPhotos || showTaggedPosts ? "underline" : "none",
                   cursor: "pointer",
                 }}
               >
                 Photos
               </h3>
               <h3
-                onClick={handleH3Click}
+                onClick={handleAlbumClick}
                 style={{
-                  textDecoration: showPhotos ? "none" : "underline",
+                  textDecoration:
+                    showPhotos || showTaggedPosts ? "none" : "underline",
                   cursor: "pointer",
                 }}
               >
@@ -130,6 +154,15 @@ const Profile = () => {
           <div className="right"></div>
         </div>
       </div>
+      <div className="tagSearch">
+        View Your Photos By tags
+        <div className="container">
+          <div className="inputInfo">
+            <input type="text" value={tags} onChange={handleTagChange} />
+            <button onClick={getTaggedPosts}>Search</button>
+          </div>
+        </div>
+      </div>
       {showPhotos ? (
         <>
           {userId === currentUser.user_id ? <Share /> : <></>}
@@ -138,6 +171,13 @@ const Profile = () => {
             : isLoading
             ? "loading..."
             : data.map((post) => <Post post={post} key={post.photo_id} />)}
+        </>
+      ) : showTagged ? (
+        <>
+          {userId === currentUser.user_id ? <Share /> : <></>}
+          {taggedPosts.map((post) => (
+            <Post post={post} key={post.photo_id} />
+          ))}
         </>
       ) : (
         <Albums />

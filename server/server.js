@@ -278,6 +278,39 @@ app.get("/tags", async (req, res) => {
   }
 });
 
+app.get("/getTaggedPosts", async (req, res) => {
+  const tags = req.query.tags;
+  const userId = req.query.userId;
+  const searchArray = tags.split(" ");
+  try {
+    let query = `
+    SELECT *
+    FROM photos
+    WHERE photo_id IN (
+      SELECT photo_id
+      FROM (
+        SELECT photo_id, string_agg(tag_text, ' ') AS tagg
+        FROM tags
+        WHERE user_id = ${userId}
+        GROUP BY photo_id
+      ) AS grouped_tags
+      WHERE `;
+
+    const conditions = [];
+
+    searchArray.forEach((word) => {
+      conditions.push(`tagg LIKE '%${word}%'`);
+    });
+
+    query += conditions.join(" AND ");
+    query += `)`;
+    const result = await pool.query(query);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.get("/comments", async (req, res) => {
   try {
     const result = await pool.query(
