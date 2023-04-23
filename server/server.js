@@ -705,6 +705,19 @@ app.get("/profilePosts", async (req, res) => {
   }
 });
 
+app.get("/getUsernameInfo", async (req, res) => {
+  const user = req.query.username;
+  try {
+    const result = await pool.query(
+      `SELECT * FROM users WHERE username LIKE concat('%', $1::text, '%')`,
+      [user]
+    );
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.get("/findAlbumPosts", async (req, res) => {
   const albumName = req.query.albumName;
   const userId = req.query.userId;

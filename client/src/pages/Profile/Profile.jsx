@@ -157,7 +157,7 @@ const Profile = () => {
       </div>
       {showPhotos || showTagged ? (
         <div className="tagSearch">
-          View Your Photos By tags
+          View {currentUser.username + "'s"} Photos By tags
           <div className="container">
             <div className="inputInfo">
               <input type="text" value={tags} onChange={handleTagChange} />
