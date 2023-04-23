@@ -77,6 +77,7 @@ const Profile = () => {
   const handleAlbumClick = () => {
     showTaggedPosts(false);
     setShowPhotos(false);
+    console.log(showTaggedPosts);
   };
 
   const removeFriend = async () => {
@@ -133,7 +134,7 @@ const Profile = () => {
                 onClick={handleH3Click}
                 style={{
                   textDecoration:
-                    showPhotos || showTaggedPosts ? "underline" : "none",
+                    showPhotos || showTagged ? "underline" : "none",
                   cursor: "pointer",
                 }}
               >
@@ -143,7 +144,7 @@ const Profile = () => {
                 onClick={handleAlbumClick}
                 style={{
                   textDecoration:
-                    showPhotos || showTaggedPosts ? "none" : "underline",
+                    showPhotos || showTagged ? "none" : "underline",
                   cursor: "pointer",
                 }}
               >
@@ -154,15 +155,17 @@ const Profile = () => {
           <div className="right"></div>
         </div>
       </div>
-      <div className="tagSearch">
-        View Your Photos By tags
-        <div className="container">
-          <div className="inputInfo">
-            <input type="text" value={tags} onChange={handleTagChange} />
-            <button onClick={getTaggedPosts}>Search</button>
+      {showPhotos || showTagged ? (
+        <div className="tagSearch">
+          View Your Photos By tags
+          <div className="container">
+            <div className="inputInfo">
+              <input type="text" value={tags} onChange={handleTagChange} />
+              <button onClick={getTaggedPosts}>Search</button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
       {showPhotos ? (
         <>
           {userId === currentUser.user_id ? <Share /> : <></>}
