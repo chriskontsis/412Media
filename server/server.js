@@ -284,8 +284,9 @@ app.get("/getTaggedPosts", async (req, res) => {
   const searchArray = tags.split(" ");
   try {
     let query = `
-    SELECT *
+    SELECT photos.*, users.username
     FROM photos
+    JOIN users ON photos.user_id = users.user_id
     WHERE photo_id IN (
       SELECT photo_id
       FROM (
@@ -295,13 +296,10 @@ app.get("/getTaggedPosts", async (req, res) => {
         GROUP BY photo_id
       ) AS grouped_tags
       WHERE `;
-
     const conditions = [];
-
     searchArray.forEach((word) => {
       conditions.push(`tagg LIKE '%${word}%'`);
     });
-
     query += conditions.join(" AND ");
     query += `)`;
     const result = await pool.query(query);
@@ -717,8 +715,9 @@ app.get("/findAlbumPosts", async (req, res) => {
     );
     const aid = albumId.rows[0].album_id;
     const result = await pool.query(
-      `SELECT p.* 
+      `SELECT p.*, username
       FROM photos AS p
+      JOIN users AS u ON (p.user_id = u.user_id)
       WHERE p.user_id = $1
       AND p.album_id = $2`,
       [userId, aid]
