@@ -37,6 +37,7 @@ const RightBar = () => {
     queryClient.invalidateQueries(["/friendsOfFriends"]);
     setSearchFriendData([]);
   };
+
   const findUser = async (e) => {
     if (e.key === "Enter") {
       const result = await makeRequest.get(
