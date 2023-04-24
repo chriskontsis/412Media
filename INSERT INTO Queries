@@ -1,0 +1,66 @@
+-- Users table
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('johndoe', 'password123', 'John', 'Doe', 'johndoe@example.com', 'New York', 'Male', '1990-01-01', 0);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('janedoe', '123password', 'Jane', 'Doe', 'janedoe@example.com', 'Los Angeles', 'Female', '1992-05-14', 100);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('bobsmith', 'password456', 'Bob', 'Smith', 'bobsmith@example.com', 'Chicago', 'Male', '1985-12-20', 50);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('alicebrown', 'pass1234', 'Alice', 'Brown', 'alicebrown@example.com', 'Seattle', 'Female', '1998-09-03', 75);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('jamesharden', 'houstclubs', 'James', 'Harden', 'jamesharden@example.com', 'Houston', 'Male', '1977-02-28', 25);
+
+
+-- Albums table
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (1, 'Vacation', '2022-08-15');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (2, 'Arizona', '2022-09-10');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (3, 'Graduation', '2021-06-01');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (4, 'Hiking A-Mountain', '2023-04-01');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (5, 'PV Lawn', '2023-03-02');
+
+
+-- Photos table
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (1, 'Fun times at the beach', '2022-08-16', 1, 'https://example.com/beach_photo.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (2, 'Beautiful sunset', '2022-09-10', 3, 'https://example.com/sunset_photo.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (3, 'ASU Grad', '2021-06-01', 4, 'https://example.com/asu_graduation_photo.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (4, 'Amazing views', '2023-04-01', 5, 'https://example.com/a_mountain_photo.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (5, 'Love the PV Lawn', '2022-11-20', NULL, 'https://example.com/pv_lawnfulton.jpg');
+
+
+-- Tags table
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('beach', 1, 1);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('sunset', 2, 2);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('ASU', 3, 3);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('Sun Devils', 4, 4);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('FULTON', 5, 5);
