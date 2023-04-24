@@ -14,6 +14,39 @@ VALUES ('alicebrown', 'pass1234', 'Alice', 'Brown', 'alicebrown@example.com', 'S
 INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
 VALUES ('jamesharden', 'houstclubs', 'James', 'Harden', 'jamesharden@example.com', 'Houston', 'Male', '1977-02-28', 25);
 
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('torylanez', 'freetory', 'Tory', 'Lanez', 'torylanez@hotmail.com', 'California', 'Male', '1990-05-28', 30);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('tomholland', 'bestspidey', 'Tom', 'Holland', 'tomholland@gmail.com', 'New York', 'Male', '2000-01-30', 40);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('willsmith', 'chrisrockslap', 'Will', 'Smith', 'willsmith@yahoo.com', 'Virginia', 'Male', '1975-02-29', 25);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('chasefields', 'chasebank', 'Chase', 'Fields', 'fieldchase@gmail.com', 'Houston', 'Male', '2003-01-19', 25);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('gomezbryant', 'gbryant12', 'Gomez', 'Bryant', 'gomezbry@hotmail', 'Las Vegas', 'Male', '1977-06-28', 25);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('jakejack', 'jjack3221', 'Jake', 'Jakcson', 'jakejack@gmail.com', 'Phoenix', 'Male', '1977-09-28', 25);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('paulstine', 'masteryoda493', 'Paul', 'Stine', 'paulystiney@gmail.com', 'Wakefield', 'Male', '1956-10-28', 25);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('jorgennn', 'prettyskies23', 'Ben', 'Jorgen', 'benjorgen24@gmail.com', 'Springfield', 'Male', '1980-02-28', 25);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('alexapronzo', 'plaidsocks3', 'Alexa', 'Pronzo', 'pronzo@gmail.com', 'Chicago', 'Female', '1999-02-19', 25);
+
+INSERT INTO Users (username, password, fname, lname, email, hometown, gender, dob, contribution)
+VALUES ('stacywhite', 'baristalover392', 'Stacy', 'White', 'stacyyywhite@gmail.comcom', 'Rochester', 'Male', '1960-02-30', 25);
+
+
+
+
 
 -- Albums table
 INSERT INTO Albums (User_id, Name, Date)
@@ -30,6 +63,38 @@ VALUES (4, 'Hiking A-Mountain', '2023-04-01');
 
 INSERT INTO Albums (User_id, Name, Date)
 VALUES (5, 'PV Lawn', '2023-03-02');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (6, 'Family Reunion', '2022-07-04');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (7, 'Summer Road Trip', '2022-08-30');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (8, 'Europe 2023', '2023-05-01');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (9, 'Ski Trip', '2024-01-15');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (10, 'Rollerblading', '2022-04-03');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (11, 'Fourth of July Beach Day', '2023-07-04');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (12, 'Disney on Ice', '2022-12-25');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (13, 'Halloweekend', '2022-10-31');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (14, 'Day Trip to Sedona', '2023-06-15');
+
+INSERT INTO Albums (User_id, Name, Date)
+VALUES (15, 'Lake Havasu Trip', '2023-08-14');
+
+
 
 
 -- Photos table
@@ -48,6 +113,38 @@ VALUES (4, 'Amazing views', '2023-04-01', 5, 'https://example.com/a_mountain_pho
 INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
 VALUES (5, 'Love the PV Lawn', '2022-11-20', NULL, 'https://example.com/pv_lawnfulton.jpg');
 
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (6, 'Fam Bam Reunion', '2021-10-12', NULL, 'https://example.com/family.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (7, 'Road Trippin', '2022-08-30', NULL, 'https://example.com/roadtrip.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (8, 'European Tour', '2023-05-01', NULL, 'https://example.com/europe.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (9, 'Hitting the slopes', '2022-11-20', NULL, 'https://example.com/ski.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (10, 'Rollero', '2022-04-03', NULL, 'https://example.com/ski.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (11, 'July4th', '2023-7-04', NULL, 'https://example.com/fourthofjuly.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (12, 'Tinkerbell skating', '2022-12-25', NULL, 'https://example.com/tinkerbell.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (13, 'Halloweekend', '2022-12-31', NULL, 'https://example.com/halloweekendglv.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (14, 'Sedonaaaa', '2023-06-15', NULL, 'https://example.com/sedona.jpg');
+
+INSERT INTO Photos (user_id, Caption, Date, Album_id, imageUrl)
+VALUES (15, 'Havasu!', '2023-08-14', NULL, 'https://example.com/havasu.jpg');
+
+
+
 
 -- Tags table
 INSERT INTO Tags (Tag_name, Photo_id, User_id)
@@ -64,3 +161,33 @@ VALUES ('Sun Devils', 4, 4);
 
 INSERT INTO Tags (Tag_name, Photo_id, User_id)
 VALUES ('FULTON', 5, 5);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('Jones Family', 6, 6);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('roadtrip', 7, 7);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('livelaugheurope', 8, 8);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('slopes', 9, 9);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('skating', 10, 10);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('america', 11, 11);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('disneymagic', 12, 12);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('sigmaalphaepsilon', 13, 13);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('sedona', 14, 14);
+
+INSERT INTO Tags (Tag_name, Photo_id, User_id)
+VALUES ('havasuformal', 15, 15);
